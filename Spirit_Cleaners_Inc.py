@@ -21,12 +21,12 @@ except sqlConn.DatabaseError:
     exit(0)
 
 # Create cursor for commands to SQL
-cur = sqlConn.cursor()
+sqlCursor = sqlConn.cursor()
 
 # try to create a table if one doesn't exist
 try:
     # Create table
-    cur.execute('''CREATE TABLE storage(playerInitials TEXT, playerScore TEXT)''')
+    sqlCursor.execute('''CREATE TABLE storage(playerInitials TEXT, playerScore TEXT)''')
 # except if table exists
 except sqlConn.DatabaseError:
     print("Table Exists.")
@@ -36,9 +36,9 @@ except sqlConn.DatabaseError:
 # cur.execute(current_string)
 # sqlConn.commit()
 
-highScores = cur.execute("SELECT * FROM storage")
+highScores = sqlCursor.execute("SELECT * FROM storage")
 
-listAllScores = cur.fetchall()
+listAllScores = sqlCursor.fetchall()
 
 # Main Game, Start PyGame
 pygame.init()
