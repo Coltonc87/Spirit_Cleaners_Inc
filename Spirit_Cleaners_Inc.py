@@ -3,6 +3,7 @@ import sqlite3
 import pygame
 import Levels as Levels
 import HighScoreScreen as HighScoreScreen
+import TitleScreen as Titlescreen
 
 """Setting up and checking the SQL Database for high scores"""
 # set directory to the current files path
@@ -45,6 +46,7 @@ pygame.init()
 # Define the main screen
 game_screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Spirit Cleaners, Inc.")
+Titlescreen.title_screen(game_screen)
 HighScoreScreen.high_score_screen(game_screen, listAllScores)
 Levels.run_levels(game_screen)
 
