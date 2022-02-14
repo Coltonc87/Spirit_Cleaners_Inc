@@ -26,7 +26,7 @@ def run_levels(screen):
         groupPlayerGroup.add(objPlayerVac)
 
         ''' ghost group'''
-        intNumOfGhosts = 5
+        intNumOfGhosts = 8
         groupGhosts = Group()
         while intNumOfGhosts > 0:
             objNewGhost = Basic_Ghost(screen)
@@ -128,13 +128,14 @@ def run_levels(screen):
             # Erase old and redraw the screen items in new locations
             pygame.display.flip()
 
+            # If the battery is dead end the game
+            if intBatteryLevel <= 0:
+                boolLevelRunning = False
+                boolGameOver = True
             # Go to next level if all debris is collected
-            if not groupAllDebris:
+            elif not groupAllDebris and intBatteryLevel > 0:
                 boolLevelRunning = False
             # Check if battery still has charge and decrease the battery level
             elif intBatteryLevel > 0:
                 intBatteryLevel -= intGameSpeed
-            # If the battery is dead end the game
-            else:
-                boolLevelRunning = False
-                boolGameOver = True
+
