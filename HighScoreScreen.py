@@ -33,20 +33,22 @@ def high_score_screen(screen, listHighScores):
         intNumOfDebris -= 1
 
     # Set yellow to be used for text
-    colorValBlue = [176, 224, 230]
+    colorValCurrent = [255, 255, 0]
     # Load custom font
-    fontScore = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 50)
+    fontScore50 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 50)
+    fontScore25 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 25)
     # Make Scoreboard Title Text
     strAllScores = ''
     for row in listHighScores:
         for item in row:
             strAllScores = strAllScores + item + '  '
-    textRendScoreboard = fontScore.render("High Scores:  " + strAllScores, True, colorValBlue)
 
     # Animation timer
     intAnimationTimer = len(strAllScores) * 60
     # Banner starting x value
     intXValue = 800
+    # Bool to set initial color change state for glow effect
+    boolColorDown = True
     # Main Loop
     while intAnimationTimer > 0:
 
@@ -73,10 +75,27 @@ def high_score_screen(screen, listHighScores):
             currentSprite.move_and_blitself()
 
         # Put the image of the title text on the screen at 10x10
-        screen.blit(textRendScoreboard, [intXValue, 250])
+        textRendScores = fontScore50.render("High Scores:  " + strAllScores, True, colorValCurrent)
+        screen.blit(textRendScores, [intXValue, 250])
+        textRendSpace = fontScore25.render("Press Space Bar to Continue", False, colorValCurrent)
+        screen.blit(textRendSpace, [225, 550])
 
         # Erase old and redraw the screen items in new locations
         pygame.display.flip()
 
         intAnimationTimer -= 1
         intXValue -= 1
+
+        # Change color for glow effect
+        if colorValCurrent[0] > 0 and boolColorDown:
+            colorValCurrent[0] -= 1
+            # colorValCurrent[1] -= 1
+            colorValCurrent[2] += 1
+        elif boolColorDown:
+            boolColorDown = False
+        elif not boolColorDown and colorValCurrent[0] < 255:
+            colorValCurrent[0] += 1
+            # colorValCurrent[1] += 1
+            colorValCurrent[2] -= 1
+        else:
+            boolColorDown = True

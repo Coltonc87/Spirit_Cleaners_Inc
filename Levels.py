@@ -56,6 +56,8 @@ def run_levels(screen):
 
         # Main Level Loop
         boolLevelRunning = True
+        boolAcceptingInput = True
+        stateMoveDirection = '0'
 
         while boolLevelRunning and intBatteryLevel > 0:
 
@@ -64,27 +66,36 @@ def run_levels(screen):
                 if event.type == pygame.QUIT:
                     sys.exit()
 
-                elif event.type == pygame.KEYDOWN:
+                elif event.type == pygame.KEYDOWN and boolAcceptingInput:
+                    boolAcceptingInput = False
                     if event.key == pygame.K_RIGHT:
-                        objPlayerVac.set_move_direction('R')
+                        stateMoveDirection = 'R'
+                        objPlayerVac.set_move_direction(stateMoveDirection)
                     elif event.key == pygame.K_LEFT:
-                        objPlayerVac.set_move_direction('L')
+                        stateMoveDirection = 'L'
+                        objPlayerVac.set_move_direction(stateMoveDirection)
                     elif event.key == pygame.K_UP:
-                        objPlayerVac.set_move_direction('U')
+                        stateMoveDirection = 'U'
+                        objPlayerVac.set_move_direction(stateMoveDirection)
                     elif event.key == pygame.K_DOWN:
-                        objPlayerVac.set_move_direction('D')
+                        stateMoveDirection = 'D'
+                        objPlayerVac.set_move_direction(stateMoveDirection)
                     elif event.key == pygame.K_ESCAPE:
                         sys.exit()
 
                 elif event.type == pygame.KEYUP:
-                    if event.key == pygame.K_RIGHT:
+                    if event.key == pygame.K_RIGHT and stateMoveDirection == 'R':
                         objPlayerVac.set_move_direction('0')
-                    elif event.key == pygame.K_LEFT:
+                        boolAcceptingInput = True
+                    elif event.key == pygame.K_LEFT and stateMoveDirection == 'L':
                         objPlayerVac.set_move_direction('0')
-                    elif event.key == pygame.K_UP:
+                        boolAcceptingInput = True
+                    elif event.key == pygame.K_UP and stateMoveDirection == 'U':
                         objPlayerVac.set_move_direction('0')
-                    elif event.key == pygame.K_DOWN:
+                        boolAcceptingInput = True
+                    elif event.key == pygame.K_DOWN and stateMoveDirection == 'D':
                         objPlayerVac.set_move_direction('0')
+                        boolAcceptingInput = True
 
             # Place Objects in new location
             objGameBackground.blitself()
@@ -138,4 +149,3 @@ def run_levels(screen):
             # Check if battery still has charge and decrease the battery level
             elif intBatteryLevel > 0:
                 intBatteryLevel -= intGameSpeed
-

@@ -16,7 +16,8 @@ def title_screen(screen):
     # Set color to be used for text
     colorValCurrent = [255, 255, 0]
     # Load custom font
-    fontTitleScreen = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 100)
+    fontTitleScreen100 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 100)
+    fontTitleScreen25 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 25)
 
     boolTitleScreen = True
     boolColorDown = True
@@ -31,25 +32,31 @@ def title_screen(screen):
                     sys.exit()
                 elif event.key == pygame.K_SPACE:
                     boolTitleScreen = False
+
         # Make Title Text
-        textRendSpirit = fontTitleScreen.render("Spirit", False, colorValCurrent)
-        textRendCleaners = fontTitleScreen.render("Cleaners", False, colorValCurrent)
-        textRendInc = fontTitleScreen.render("Inc.", False, colorValCurrent)
+        textRendSpirit = fontTitleScreen100.render("Spirit", False, colorValCurrent)
+        textRendCleaners = fontTitleScreen100.render("Cleaners", False, colorValCurrent)
+        textRendInc = fontTitleScreen100.render("Inc.", False, colorValCurrent)
+        textRendSpace = fontTitleScreen25.render("Press Space Bar to Continue", False, colorValCurrent)
         objGameBackground.blitself()
         # Put the image of the title text on the screen
         screen.blit(textRendSpirit, [100, 100])
         screen.blit(textRendCleaners, [200, 200])
         screen.blit(textRendInc, [300, 300])
+        screen.blit(textRendSpace, [225, 550])
         # Erase old and redraw the screen items in new locations
         pygame.display.flip()
+
         # Change color for glow effect
         if colorValCurrent[0] > 0 and boolColorDown:
             colorValCurrent[0] -= 1
-            colorValCurrent[1] -= 1
+            # colorValCurrent[1] -= 1
+            colorValCurrent[2] += 1
         elif boolColorDown:
             boolColorDown = False
         elif not boolColorDown and colorValCurrent[0] < 255:
             colorValCurrent[0] += 1
-            colorValCurrent[1] += 1
+            # colorValCurrent[1] += 1
+            colorValCurrent[2] -= 1
         else:
             boolColorDown = True
