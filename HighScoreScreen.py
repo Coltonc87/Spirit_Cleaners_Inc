@@ -41,7 +41,7 @@ def high_score_screen(screen, listHighScores):
     strAllScores = ''
     for row in listHighScores:
         for item in row:
-            strAllScores = strAllScores + item + '  '
+            strAllScores = strAllScores + str(item) + '  '
 
     # Animation timer
     intAnimationTimer = len(strAllScores) * 60

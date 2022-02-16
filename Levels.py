@@ -149,3 +149,5 @@ def run_levels(screen):
             # Check if battery still has charge and decrease the battery level
             elif intBatteryLevel > 0:
                 intBatteryLevel -= intGameSpeed
+
+    return intTotalScore
