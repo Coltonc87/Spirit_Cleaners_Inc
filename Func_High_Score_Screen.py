@@ -1,14 +1,20 @@
+"""
+
+This is the module for displaying the high score screen
+
+"""
+
 import sys
 import pygame
 import random
-from background import Background
-from Vacuum import Vacuum
-from Debris import Debris
-from Basic_Ghost import Basic_Ghost
+from Class_Background import Background
+from Class_Vacuum import Vacuum
+from Class_Debris import Debris
+from Class_Basic_Ghost import Basic_Ghost
 from pygame.sprite import Group
 
 
-def high_score_screen(screen, listHighScores):
+def display_screen(screen, listHighScores):
     # Start and draw the initial screen
     # Make instances and add to a list
     # Need a blank list here and then append it with objects

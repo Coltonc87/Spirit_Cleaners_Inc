@@ -1,3 +1,9 @@
+"""
+
+This is the module for the player controlled vacuum sprite
+
+"""
+
 import pygame
 from pygame.sprite import Sprite
 

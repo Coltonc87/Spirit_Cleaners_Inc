@@ -1,3 +1,9 @@
+"""
+
+This is the module for the game background
+
+"""
+
 import pygame
 
 

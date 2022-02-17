@@ -1,9 +1,15 @@
+"""
+
+This is the module for the main level loop of the game
+
+"""
+
 import sys
 import pygame
-from background import Background
-from Vacuum import Vacuum
-from Debris import Debris
-from Basic_Ghost import Basic_Ghost
+from Class_Background import Background
+from Class_Vacuum import Vacuum
+from Class_Debris import Debris
+from Class_Basic_Ghost import Basic_Ghost
 from pygame.sprite import Group
 
 
@@ -82,6 +88,11 @@ def run_levels(screen):
                         objPlayerVac.set_move_direction(stateMoveDirection)
                     elif event.key == pygame.K_ESCAPE:
                         sys.exit()
+                    elif event.key == pygame.K_SPACE:
+                        boolLevelRunning = False
+                        boolGameOver = True
+                    else:
+                        boolAcceptingInput = True
 
                 elif event.type == pygame.KEYUP:
                     if event.key == pygame.K_RIGHT and stateMoveDirection == 'R':
@@ -150,4 +161,4 @@ def run_levels(screen):
             elif intBatteryLevel > 0:
                 intBatteryLevel -= intGameSpeed
 
-    return intTotalScore
+    return intTotalScore + 100

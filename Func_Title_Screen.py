@@ -1,11 +1,15 @@
+"""
+
+This is the module for displaying the title screen
+
+"""
+
 import sys
-
 import pygame
+from Class_Background import Background
 
-from background import Background
 
-
-def title_screen(screen):
+def display_screen(screen):
     # Start and draw the initial screen
     # Make instances and add to a list
     # Need a blank list here and then append it with objects

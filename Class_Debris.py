@@ -1,3 +1,9 @@
+"""
+
+This is the module for the debris collectible sprite
+
+"""
+
 import pygame
 from pygame.sprite import Sprite
 import random

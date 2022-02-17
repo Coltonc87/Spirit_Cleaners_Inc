@@ -1,22 +1,26 @@
+"""
+
+This is the module for input of initials for a new high score
+
+"""
+
 import sys
-
 import pygame
+from Class_Background import Background
 
-from background import Background
 
-
-def get_initials(screen, score):
+def display_screen(screen, score):
     # Start and draw the initial screen
-    # Make instances and add to a list
-    # Need a blank list here and then append it with objects
+    # Make instance of background
     objGameBackground = Background(screen)
     # Set color to be used for text
     colorValCurrent = [255, 255, 0]
-    # Load custom font
+    # Load custom font in 3 sizes
     fontInputScreen50 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 50)
     fontTitleScreen25 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 25)
     fontInputScreen100 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 100)
 
+    # Initialize a "blank" list
     listInitials = ['_', '_', '_']
 
     boolInputScreen = True

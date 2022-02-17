@@ -1,3 +1,9 @@
+"""
+
+This is the module for the basic ghost enemy sprite
+
+"""
+
 import pygame
 from pygame.sprite import Sprite
 import random
