@@ -68,7 +68,15 @@ for row in list_All_Scores:
                 bool_Score_Check = True
 # If it's a new ranking score run the initials input screen
 if bool_Score_Check:
-    Initials_Screen.display_screen(game_screen, intScoreReturn)
+    charNewScoreInit = Initials_Screen.display_screen(game_screen, intScoreReturn)
+    current_string = 'INSERT INTO storage (playerInitials, playerScore) ' \
+                     'VALUES ("' + charNewScoreInit + '", ' + str(intScoreReturn) + ');'
+    sqlCursor.execute(current_string)
+    sqlConnection.commit()
+    sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
+    list_All_Scores = sqlCursor.fetchall()
+
+
 # Display high score screen
 Score_Screen.display_screen(game_screen, list_All_Scores)
 # Show title screen

@@ -20,11 +20,18 @@ def display_screen(screen, score):
     fontTitleScreen25 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 25)
     fontInputScreen100 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 100)
 
+    # Tuple of characters
+    tupCharacterChoices = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+                           'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+                           'U', 'V', 'W', 'X', 'Y', 'Z', '_', '!')
+
     # Initialize a "blank" list
-    listInitials = ['_', '_', '_']
+    listInitials = ['_', ' ', '_', ' ', '_']
 
     boolInputScreen = True
     boolColorDown = True
+    intCursorIndex = 0
+    intCharChoiceIndex = 0
     while boolInputScreen:
         # Monitor to user input
         for event in pygame.event.get():
@@ -36,10 +43,25 @@ def display_screen(screen, score):
                     sys.exit()
                 elif event.key == pygame.K_SPACE:
                     boolInputScreen = False
+                elif event.key == pygame.K_RIGHT and intCursorIndex < 4:
+                    intCursorIndex += 2
+                    intCharChoiceIndex = 0
+                elif event.key == pygame.K_LEFT and intCursorIndex > 0:
+                    intCursorIndex -= 2
+                    intCharChoiceIndex = 0
+                elif event.key == pygame.K_UP and intCharChoiceIndex < 27:
+                    intCharChoiceIndex += 1
+                elif event.key == pygame.K_DOWN and intCharChoiceIndex > 0:
+                    intCharChoiceIndex -= 1
+
+        listInitials[intCursorIndex] = tupCharacterChoices[intCharChoiceIndex]
 
         # Make Title Text
         textRendPrompt = fontInputScreen50.render("Enter Your Initials:", False, colorValCurrent)
-        textRendInitials = fontInputScreen100.render("_ _ _", False, colorValCurrent)
+        strInitials = ''
+        for character in listInitials:
+            strInitials = strInitials + character
+        textRendInitials = fontInputScreen100.render(strInitials, False, colorValCurrent)
         textRendSpace = fontTitleScreen25.render("Press Space Bar to Continue", False, colorValCurrent)
 
         objGameBackground.blitself()
@@ -61,3 +83,10 @@ def display_screen(screen, score):
             colorValCurrent[2] -= 1
         else:
             boolColorDown = True
+
+    strInitialsOutput = ''
+    for character in listInitials:
+        if character != ' ':
+            strInitialsOutput = strInitialsOutput + character
+
+    return strInitialsOutput
