@@ -10,6 +10,8 @@ from Class_Background import Background
 
 
 def display_screen(screen):
+    # Clock Object for controlling game speed
+    obj_Clock = pygame.time.Clock()
     # Start and draw the initial screen
     # Make instances and add to a list
     # Need a blank list here and then append it with objects
@@ -61,3 +63,5 @@ def display_screen(screen):
             colorValCurrent[2] -= 1
         else:
             boolColorDown = True
+        # Tick speed to control loop speed
+        obj_Clock.tick(120)

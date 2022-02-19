@@ -17,7 +17,7 @@ class Basic_Ghost(Sprite):
         self.screen = screen
 
         # Load initial ghost image and get rectangle collision hull
-        self.image = pygame.image.load('images/Basic_Ghost_1.png')
+        self.image = pygame.image.load('images/Basic_Ghost_1.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
         # Set randomly if the ghost will move along the x axis (1) or y axis (2)

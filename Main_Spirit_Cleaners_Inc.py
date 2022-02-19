@@ -46,6 +46,7 @@ sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
 list_All_Scores = sqlCursor.fetchall()
 # Main Game, Start PyGame
 pygame.init()
+
 # Define the main screen size
 game_screen = pygame.display.set_mode((800, 600))
 # Set window caption

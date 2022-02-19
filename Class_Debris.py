@@ -22,7 +22,7 @@ class Debris(Sprite):
                                 'images/Debris_3.png',
                                 'images/Debris_4.png']
         self.intRandImageIndex = random.randint(0, 3)
-        self.imageInitial = pygame.image.load(self.listImageChoice[self.intRandImageIndex])
+        self.imageInitial = pygame.image.load(self.listImageChoice[self.intRandImageIndex]).convert_alpha()
         self.rect = self.imageInitial.get_rect()
         self.screen_rect = screen.get_rect()
 

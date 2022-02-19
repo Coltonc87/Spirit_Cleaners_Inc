@@ -15,6 +15,8 @@ from pygame.sprite import Group
 
 
 def display_screen(screen, listHighScores):
+    # Clock Object for controlling game speed
+    obj_Clock = pygame.time.Clock()
     # Start and draw the initial screen
     # Make instances and add to a list
     # Need a blank list here and then append it with objects
@@ -81,7 +83,9 @@ def display_screen(screen, listHighScores):
             currentSprite.move_and_blitself()
 
         # Put the image of the title text on the screen at 10x10
-        textRendScores = fontScore50.render("High Scores:  " + strAllScores, True, colorValCurrent)
+        textRendTitle = fontScore50.render("High Scores", False, colorValCurrent)
+        screen.blit(textRendTitle, [250, 150])
+        textRendScores = fontScore50.render(strAllScores, True, colorValCurrent)
         screen.blit(textRendScores, [intXValue, 250])
         textRendSpace = fontScore25.render("Press Space Bar to Continue", False, colorValCurrent)
         screen.blit(textRendSpace, [225, 550])
@@ -105,3 +109,5 @@ def display_screen(screen, listHighScores):
             colorValCurrent[2] -= 1
         else:
             boolColorDown = True
+        # Tick speed to control loop speed
+        obj_Clock.tick(120)

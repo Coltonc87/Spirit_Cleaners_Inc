@@ -14,7 +14,7 @@ class Background:
         self.screen = screen
 
         # Load background image and get rectangle collision hull
-        self.image = pygame.image.load('images/Level_1.png')
+        self.image = pygame.image.load('images/Level_1.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 

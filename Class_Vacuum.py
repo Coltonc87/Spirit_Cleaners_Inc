@@ -16,10 +16,10 @@ class Vacuum(Sprite):
         self.screen = screen
 
         # Load initial vacuum image and get rectangle collision hull
-        self.images = [pygame.image.load('images/Vacuum_R.png'),
-                       pygame.image.load('images/Vacuum_L.png'),
-                       pygame.image.load('images/Vacuum_U.png'),
-                       pygame.image.load('images/Vacuum_D.png')]
+        self.images = [pygame.image.load('images/Vacuum_R.png').convert_alpha(),
+                       pygame.image.load('images/Vacuum_L.png').convert_alpha(),
+                       pygame.image.load('images/Vacuum_U.png').convert_alpha(),
+                       pygame.image.load('images/Vacuum_D.png').convert_alpha()]
         self.image = self.images[3]
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
