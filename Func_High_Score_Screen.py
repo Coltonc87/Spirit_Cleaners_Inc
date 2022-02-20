@@ -15,6 +15,7 @@ from pygame.sprite import Group
 
 
 def display_screen(screen, listHighScores):
+    pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
     # Clock Object for controlling game speed
     obj_Clock = pygame.time.Clock()
     # Start and draw the initial screen
@@ -52,7 +53,7 @@ def display_screen(screen, listHighScores):
             strAllScores = strAllScores + str(item) + '  '
 
     # Animation timer
-    intAnimationTimer = len(strAllScores) * 60
+    intAnimationTimer = len(strAllScores) * 35
     # Banner starting x value
     intXValue = 800
     # Bool to set initial color change state for glow effect
@@ -85,7 +86,7 @@ def display_screen(screen, listHighScores):
         # Put the image of the title text on the screen at 10x10
         textRendTitle = fontScore50.render("High Scores", False, colorValCurrent)
         screen.blit(textRendTitle, [250, 150])
-        textRendScores = fontScore50.render(strAllScores, True, colorValCurrent)
+        textRendScores = fontScore50.render(strAllScores, False, colorValCurrent)
         screen.blit(textRendScores, [intXValue, 250])
         textRendSpace = fontScore25.render("Press Space Bar to Continue", False, colorValCurrent)
         screen.blit(textRendSpace, [225, 550])
@@ -111,3 +112,5 @@ def display_screen(screen, listHighScores):
             boolColorDown = True
         # Tick speed to control loop speed
         obj_Clock.tick(120)
+
+    pygame.mixer.music.fadeout(1000)

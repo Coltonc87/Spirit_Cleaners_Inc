@@ -5,6 +5,7 @@ This is the main script for the game run it to test all features
 """
 
 import os
+import time
 import sqlite3
 import pygame
 import Func_Levels as Levels
@@ -37,15 +38,20 @@ except sqlConnection.DatabaseError:
     print("Table Exists.")
 
 # Initial data for testing
-# current_string = 'INSERT INTO storage (playerInitials, playerScore) VALUES ("RRC", 2000);'
+# current_string = 'INSERT INTO storage (playerInitials, playerScore) VALUES ("KMC", 13600);'
 # sqlCursor.execute(current_string)
-# sqlConn.commit()
+# sqlConnection.commit()
 
 # Read the scores in as a list of tuples from database, sorting with the query
 sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
 list_All_Scores = sqlCursor.fetchall()
+print(list_All_Scores)
+print(len(list_All_Scores))
+
 # Main Game, Start PyGame
 pygame.init()
+# Start PyGame Mixer for sounds
+pygame.mixer.init()
 
 # Define the main screen size
 game_screen = pygame.display.set_mode((800, 600))
@@ -53,10 +59,13 @@ game_screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Spirit Cleaners, Inc.")
 # Show title screen
 Title_Screen.display_screen(game_screen)
+time.sleep(1.5)
 # Show high scores
 Score_Screen.display_screen(game_screen, list_All_Scores)
+time.sleep(1.5)
 # Run the main levels loop until Game Over and return the score
 intScoreReturn = Levels.run_levels(game_screen)
+time.sleep(1.5)
 
 # Check if the current score is in the top 10 scores
 bool_Score_Check = False
@@ -69,18 +78,29 @@ for row in list_All_Scores:
                 bool_Score_Check = True
 # If it's a new ranking score run the initials input screen
 if bool_Score_Check:
+    if len(list_All_Scores) > 9:
+        current_string = 'DELETE FROM storage WHERE (playerInitials= \'' + list_All_Scores[9][0] + '\' AND playerScore= ' + str(list_All_Scores[9][1]) + ');'
+        sqlCursor.execute(current_string)
+        sqlConnection.commit()
+
     charNewScoreInit = Initials_Screen.display_screen(game_screen, intScoreReturn)
     current_string = 'INSERT INTO storage (playerInitials, playerScore) ' \
                      'VALUES ("' + charNewScoreInit + '", ' + str(intScoreReturn) + ');'
+
     sqlCursor.execute(current_string)
     sqlConnection.commit()
     sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
     list_All_Scores = sqlCursor.fetchall()
+    time.sleep(1.5)
 
 
 # Display high score screen
 Score_Screen.display_screen(game_screen, list_All_Scores)
+time.sleep(1.5)
+print(list_All_Scores)
+print(len(list_All_Scores))
 # Show title screen
 Title_Screen.display_screen(game_screen)
+time.sleep(1.5)
 # Close database
 sqlConnection.close()

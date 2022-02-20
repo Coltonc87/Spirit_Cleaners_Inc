@@ -15,6 +15,8 @@ from pygame.sprite import Group
 
 
 def run_levels(screen):
+    # Level counter
+    intLevel = 1
     # Clock Object for controlling game speed
     obj_Clock = pygame.time.Clock()
     # Set flag for game to exit
@@ -34,26 +36,14 @@ def run_levels(screen):
         # Make instances and add to a list
         # Need a blank list here and then append it with objects
         objGameBackground = Background(screen)
-        intCountIn = 3
-        while intCountIn > -1:
-            obj_Clock.tick(1)
-            objGameBackground.blitself()
-            textRendCount = fontMain100.render(str(intCountIn), True, colorValYellow)
-            screen.blit(textRendCount, [350, 225])
-            pygame.display.flip()
-            intCountIn -= 1
-        objGameBackground.blitself()
-        textRendCount = fontMain100.render('GO!', True, colorValYellow)
-        screen.blit(textRendCount, [300, 225])
-        pygame.display.flip()
-        time.sleep(1)
-        # Player in group to test collisions
+
+        ''' player group'''
         objPlayerVac = Vacuum(screen)
         groupPlayerGroup = Group()
         groupPlayerGroup.add(objPlayerVac)
 
         ''' ghost group'''
-        intNumOfGhosts = 5
+        intNumOfGhosts = intLevel + 4
         groupGhosts = Group()
         while intNumOfGhosts > 0:
             objNewGhost = Basic_Ghost(screen)
@@ -61,21 +51,38 @@ def run_levels(screen):
             intNumOfGhosts -= 1
 
         ''' Debris group'''
-        intNumOfDebris = 5
+        intNumOfDebris = intLevel + 10
         groupAllDebris = Group()
         while intNumOfDebris > 0:
             objNewDebris = Debris(screen)
             groupAllDebris.add(objNewDebris)
             intNumOfDebris -= 1
 
+        intCountIn = 3
+        while intCountIn > 0:
+            objGameBackground.blitself()
+            textRendCount = fontMain100.render(str(intCountIn), False, colorValYellow)
+            screen.blit(textRendCount, [350, 225])
+            pygame.display.flip()
+            time.sleep(0.5)
+            intCountIn -= 1
+        objGameBackground.blitself()
+        textRendCount = fontMain100.render('GO!', False, colorValYellow)
+        screen.blit(textRendCount, [300, 225])
+        pygame.display.flip()
+        time.sleep(0.5)
+
+        pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
+
         # Make Title Text
-        textRendTitle = fontMain25.render("Spirit Cleaners, Inc.", True, colorValYellow)
+        textRendTitle = fontMain25.render("Spirit Cleaners, Inc.", False, colorValYellow)
         # Make Score Text
-        textRendScore = fontMain25.render('Score: ' + str(intTotalScore), True, colorValYellow)
+        textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
         # Set battery level (100%)
         intBatteryLevel = 10000
         # Make Battery Text
-        textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True, colorValYellow)
+        textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), False,
+                                            colorValYellow)
 
         # Main Level Loop
         boolLevelRunning = True
@@ -129,36 +136,37 @@ def run_levels(screen):
             objGameBackground.blitself()
             for currentSprite in groupAllDebris.sprites():
                 currentSprite.blitself()
-            for currentSprite in groupPlayerGroup.sprites():
-                currentSprite.move_and_blitself()
             for currentSprite in groupGhosts.sprites():
+                currentSprite.move_and_blitself()
+            for currentSprite in groupPlayerGroup.sprites():
                 currentSprite.move_and_blitself()
 
             # Put the image of the title text on the screen at 10x10
             screen.blit(textRendTitle, [10, 10])
             # Check for collisions update battery or score accordingly
             # First check if player and ghosts collide
-            if pygame.sprite.spritecollideany(objPlayerVac, groupGhosts):
+            if pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True, pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove ghosts player hit
                 pygame.sprite.groupcollide(groupPlayerGroup, groupGhosts, False, True)
                 # Lose 25% of the full battery charge
                 intBatteryLevel = (intBatteryLevel - 2500)
                 # Render the battery text
                 textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
-                                                  colorValYellow)
+                                                    colorValYellow)
             # Second check if player and debris collide
-            elif pygame.sprite.spritecollideany(objPlayerVac, groupAllDebris):
+            elif pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
+                                             pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove debris player hit
                 pygame.sprite.groupcollide(groupPlayerGroup, groupAllDebris, False, True)
                 # Gain 100 Points!
                 intTotalScore += 100
                 # Render the score text
-                textRendScore = fontMain25.render('Score: ' + str(intTotalScore), True, colorValYellow)
+                textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
             # If no collisions then simply lower the battery level
             else:
                 # Render the battery text
                 textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
-                                                  colorValYellow)
+                                                    colorValYellow)
             # Place the score text on the screen
             screen.blit(textRendScore, [300, 10])
             # Place the battery text on the screen
@@ -181,4 +189,6 @@ def run_levels(screen):
             obj_Clock.tick(intGameSpeed)
         # increase game speed by 5 each time a level progresses
         intGameSpeed += 5
+        intLevel += 1
     return intTotalScore + 100
+    pygame.mixer.music.fadeout(1000)

@@ -10,6 +10,9 @@ from Class_Background import Background
 
 
 def display_screen(screen):
+    # Load Title Screen Music
+    pygame.mixer.music.load('sounds/Title_Theme.ogg')
+    pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
     # Clock Object for controlling game speed
     obj_Clock = pygame.time.Clock()
     # Start and draw the initial screen
@@ -65,3 +68,5 @@ def display_screen(screen):
             boolColorDown = True
         # Tick speed to control loop speed
         obj_Clock.tick(120)
+
+    pygame.mixer.music.fadeout(1000)
