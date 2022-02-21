@@ -10,6 +10,8 @@ from Class_Background import Background
 
 
 def display_screen(screen):
+    # explosion_sound = pygame.mixer.Sound("assets/sounds/explosion_1.wav")
+    # pygame.mixer.Sound.play(explosion_sound)
     # Load Title Screen Music
     pygame.mixer.music.load('sounds/Title_Theme.ogg')
     pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)

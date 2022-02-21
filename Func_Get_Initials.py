@@ -10,6 +10,9 @@ from Class_Background import Background
 
 
 def display_screen(screen, score):
+    # Load high score Screen Music
+    pygame.mixer.music.load('sounds/High_Scores.ogg')
+    pygame.mixer.music.play(loops=0, start=0.0, fade_ms=1000)
     # Start and draw the initial screen
     # Make instance of background
     objGameBackground = Background(screen)
@@ -89,4 +92,5 @@ def display_screen(screen, score):
         if character != ' ':
             strInitialsOutput = strInitialsOutput + character
 
+    pygame.mixer.music.fadeout(1000)
     return strInitialsOutput

@@ -71,9 +71,9 @@ def run_levels(screen):
         screen.blit(textRendCount, [300, 225])
         pygame.display.flip()
         time.sleep(0.5)
-
+        # Load Title Screen Music
+        pygame.mixer.music.load('sounds/Title_Theme.ogg')
         pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
-
         # Make Title Text
         textRendTitle = fontMain25.render("Spirit Cleaners, Inc.", False, colorValYellow)
         # Make Score Text
@@ -157,9 +157,9 @@ def run_levels(screen):
             elif pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
                                              pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove debris player hit
-                pygame.sprite.groupcollide(groupPlayerGroup, groupAllDebris, False, True)
+                dictDebrisCollide = pygame.sprite.groupcollide(groupPlayerGroup, groupAllDebris, False, True)
                 # Gain 100 Points!
-                intTotalScore += 100
+                intTotalScore += (len(dictDebrisCollide) * 100)
                 # Render the score text
                 textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
             # If no collisions then simply lower the battery level
@@ -182,6 +182,7 @@ def run_levels(screen):
             # Go to next level if all debris is collected
             elif not groupAllDebris:
                 boolLevelRunning = False
+                pygame.mixer.music.fadeout(1000)
             # Check if battery still has charge and decrease the battery level
             elif intBatteryLevel > 0:
                 intBatteryLevel -= 1
@@ -190,5 +191,6 @@ def run_levels(screen):
         # increase game speed by 5 each time a level progresses
         intGameSpeed += 5
         intLevel += 1
-    return intTotalScore + 100
+
     pygame.mixer.music.fadeout(1000)
+    return intTotalScore + 100

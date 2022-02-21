@@ -15,7 +15,9 @@ from pygame.sprite import Group
 
 
 def display_screen(screen, listHighScores):
-    pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
+    # Load high score Screen Music
+    pygame.mixer.music.load('sounds/High_Scores.ogg')
+    pygame.mixer.music.play(loops=0, start=0.0, fade_ms=1000)
     # Clock Object for controlling game speed
     obj_Clock = pygame.time.Clock()
     # Start and draw the initial screen
