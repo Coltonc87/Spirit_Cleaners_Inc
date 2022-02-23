@@ -11,6 +11,7 @@ from Class_Background import Background
 from Class_Vacuum import Vacuum
 from Class_Debris import Debris
 from Class_Basic_Ghost import Basic_Ghost
+from Class_Adv_Ghost import Adv_Ghost
 from pygame.sprite import Group
 
 
@@ -45,13 +46,17 @@ def run_levels(screen):
         ''' ghost group'''
         intNumOfGhosts = intLevel + 4
         groupGhosts = Group()
-        while intNumOfGhosts > 0:
+        while intNumOfGhosts > 2:
             objNewGhost = Basic_Ghost(screen)
+            groupGhosts.add(objNewGhost)
+            intNumOfGhosts -= 1
+        while intNumOfGhosts > 0:
+            objNewGhost = Adv_Ghost(screen)
             groupGhosts.add(objNewGhost)
             intNumOfGhosts -= 1
 
         ''' Debris group'''
-        intNumOfDebris = intLevel + 10
+        intNumOfDebris = 40
         groupAllDebris = Group()
         while intNumOfDebris > 0:
             objNewDebris = Debris(screen)
@@ -158,8 +163,9 @@ def run_levels(screen):
                                              pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove debris player hit
                 dictDebrisCollide = pygame.sprite.groupcollide(groupPlayerGroup, groupAllDebris, False, True)
-                # Gain 100 Points!
-                intTotalScore += (len(dictDebrisCollide) * 100)
+                # Gain 100 Points per debris piece
+                intNumDebrisCollected = len(dictDebrisCollide) + 1
+                intTotalScore += (100 * intNumDebrisCollected)
                 # Render the score text
                 textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
             # If no collisions then simply lower the battery level

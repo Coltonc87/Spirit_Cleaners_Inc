@@ -9,18 +9,18 @@ from pygame.sprite import Sprite
 import random
 
 
-class Basic_Ghost(Sprite):
+class Adv_Ghost(Sprite):
 
     def __init__(self, screen):
-        super(Basic_Ghost, self).__init__()
+        super(Adv_Ghost, self).__init__()
         # Load main screen size
         self.screen = screen
 
         # Load initial ghost image and get rectangle collision hull
-        self.images = [pygame.image.load('images/Basic_Ghost_R.png').convert_alpha(),
-                       pygame.image.load('images/Basic_Ghost_L.png').convert_alpha(),
-                       pygame.image.load('images/Basic_Ghost_U.png').convert_alpha(),
-                       pygame.image.load('images/Basic_Ghost_D.png').convert_alpha()]
+        self.images = [pygame.image.load('images/Adv_Ghost_L.png').convert_alpha(),
+                       pygame.image.load('images/Adv_Ghost_L.png').convert_alpha(),
+                       pygame.image.load('images/Adv_Ghost_L.png').convert_alpha(),
+                       pygame.image.load('images/Adv_Ghost_L.png').convert_alpha()]
         self.image = self.images[3]
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
@@ -63,10 +63,10 @@ class Basic_Ghost(Sprite):
                 self.moving_left = True
 
             if self.moving_left:
-                self.rect.centerx -= 1
+                self.rect.centerx -= 2
                 self.image = self.images[1]
             elif not self.moving_left:
-                self.rect.centerx += 1
+                self.rect.centerx += 2
                 self.image = self.images[0]
 
             # Place on the main screen coordinates
@@ -79,10 +79,10 @@ class Basic_Ghost(Sprite):
                 self.moving_down = False
 
             if self.moving_down:
-                self.rect.centery += 1
+                self.rect.centery += 2
                 self.image = self.images[3]
             elif not self.moving_down:
-                self.rect.centery -= 1
+                self.rect.centery -= 2
                 self.image = self.images[2]
 
             # Place on the main screen coordinates
