@@ -12,6 +12,7 @@ from Class_Vacuum import Vacuum
 from Class_Debris import Debris
 from Class_Basic_Ghost import Basic_Ghost
 from Class_Adv_Ghost import Adv_Ghost
+from Class_Expert_Ghost import Exp_Ghost
 from pygame.sprite import Group
 
 
@@ -44,14 +45,18 @@ def run_levels(screen):
         groupPlayerGroup.add(objPlayerVac)
 
         ''' ghost group'''
-        intNumOfGhosts = intLevel + 4
+        intNumOfGhosts = 6
         groupGhosts = Group()
-        while intNumOfGhosts > 2:
+        while intNumOfGhosts > 3:
             objNewGhost = Basic_Ghost(screen)
             groupGhosts.add(objNewGhost)
             intNumOfGhosts -= 1
-        while intNumOfGhosts > 0:
+        while intNumOfGhosts > 1:
             objNewGhost = Adv_Ghost(screen)
+            groupGhosts.add(objNewGhost)
+            intNumOfGhosts -= 1
+        while intNumOfGhosts > 0:
+            objNewGhost = Exp_Ghost(screen)
             groupGhosts.add(objNewGhost)
             intNumOfGhosts -= 1
 

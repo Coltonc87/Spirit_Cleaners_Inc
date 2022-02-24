@@ -9,10 +9,10 @@ from pygame.sprite import Sprite
 import random
 
 
-class Adv_Ghost(Sprite):
+class Exp_Ghost(Sprite):
 
     def __init__(self, screen):
-        super(Adv_Ghost, self).__init__()
+        super(Exp_Ghost, self).__init__()
         # Load main screen size
         self.screen = screen
 
@@ -58,13 +58,18 @@ class Adv_Ghost(Sprite):
     def move_and_blitself(self):
 
         if self.rect.centerx <= 100 and self.moving_left:
-            self.moving_left = False
+            # self.moving_left = False
+            self.rect.centerx = 700
         elif self.rect.centerx >= 700 and not self.moving_left:
-            self.moving_left = True
+            # self.moving_left = True
+            self.rect.centerx = 100
+
         if self.rect.centery <= 100 and not self.moving_down:
-            self.moving_down = True
+            # self.moving_down = True
+            self.rect.centery = 500
         elif self.rect.centery >= 500 and self.moving_down:
-            self.moving_down = False
+            # self.moving_down = False
+            self.rect.centery = 100
 
         if self.moving_left and self.moving_down:
             self.rect.centerx -= 1
