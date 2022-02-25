@@ -17,10 +17,10 @@ class Exp_Ghost(Sprite):
         self.screen = screen
 
         # Load initial ghost image and get rectangle collision hull
-        self.images = [pygame.image.load('images/Adv_Ghost_DL.png').convert_alpha(),
-                       pygame.image.load('images/Adv_Ghost_DR.png').convert_alpha(),
-                       pygame.image.load('images/Adv_Ghost_UL.png').convert_alpha(),
-                       pygame.image.load('images/Adv_Ghost_UR.png').convert_alpha()]
+        self.images = [pygame.image.load('images/Exp_Ghost_DL.png').convert_alpha(),
+                       pygame.image.load('images/Exp_Ghost_DR.png').convert_alpha(),
+                       pygame.image.load('images/Exp_Ghost_UL.png').convert_alpha(),
+                       pygame.image.load('images/Exp_Ghost_UR.png').convert_alpha()]
         self.image = self.images[3]
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()

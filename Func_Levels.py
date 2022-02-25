@@ -24,7 +24,7 @@ def run_levels(screen):
     # Set flag for game to exit
     boolGameOver = False
     # Set initial speed
-    intGameSpeed = 120
+    intGameSpeed = 110
     # Make score variable
     intTotalScore = 0
     # Set yellow to be used for text
@@ -45,20 +45,44 @@ def run_levels(screen):
         groupPlayerGroup.add(objPlayerVac)
 
         ''' ghost group'''
-        intNumOfGhosts = 6
+        if intLevel < 4:
+            intNumOfBasicGhosts = 7 - intLevel
+            intNumOfAdvGhosts = intLevel - 1
+            intNumOfExpGhosts = intLevel - 2
+        elif intLevel == 4:
+            intNumOfBasicGhosts = 2
+            intNumOfAdvGhosts = 2
+            intNumOfExpGhosts = 2
+        elif intLevel == 5:
+            intNumOfBasicGhosts = 1
+            intNumOfAdvGhosts = 3
+            intNumOfExpGhosts = 2
+        elif intLevel == 6:
+            intNumOfBasicGhosts = 0
+            intNumOfAdvGhosts = 3
+            intNumOfExpGhosts = 3
+        elif intLevel > 6:
+            intNumOfBasicGhosts = 0
+            intNumOfAdvGhosts = 9 - intLevel
+            intNumOfExpGhosts = intLevel - 3
+
         groupGhosts = Group()
-        while intNumOfGhosts > 3:
+
+        intGhostCounter = intNumOfBasicGhosts
+        while intGhostCounter > 0:
             objNewGhost = Basic_Ghost(screen)
             groupGhosts.add(objNewGhost)
-            intNumOfGhosts -= 1
-        while intNumOfGhosts > 1:
+            intGhostCounter -= 1
+        intGhostCounter = intNumOfAdvGhosts
+        while intGhostCounter > 0:
             objNewGhost = Adv_Ghost(screen)
             groupGhosts.add(objNewGhost)
-            intNumOfGhosts -= 1
-        while intNumOfGhosts > 0:
+            intGhostCounter -= 1
+        intGhostCounter = intNumOfExpGhosts
+        while intGhostCounter > 0:
             objNewGhost = Exp_Ghost(screen)
             groupGhosts.add(objNewGhost)
-            intNumOfGhosts -= 1
+            intGhostCounter -= 1
 
         ''' Debris group'''
         intNumOfDebris = 40
@@ -86,20 +110,19 @@ def run_levels(screen):
         pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
         # Make Title Text
         textRendTitle = fontMain25.render("Spirit Cleaners, Inc.", False, colorValYellow)
+        # Make Level Text
+        textRendLevel = fontMain25.render('Level: ' + str(intLevel), False, colorValYellow)
         # Make Score Text
         textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
         # Set battery level (100%)
         intBatteryLevel = 10000
-        # Make Battery Text
-        textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), False,
-                                            colorValYellow)
 
         # Main Level Loop
         boolLevelRunning = True
         boolAcceptingInput = True
         stateMoveDirection = '0'
 
-        while boolLevelRunning and intBatteryLevel > 0:
+        while boolLevelRunning and not boolGameOver:
 
             # Monitor to user input
             for event in pygame.event.get():
@@ -153,16 +176,15 @@ def run_levels(screen):
 
             # Put the image of the title text on the screen at 10x10
             screen.blit(textRendTitle, [10, 10])
+            screen.blit(textRendLevel, [325, 560])
             # Check for collisions update battery or score accordingly
             # First check if player and ghosts collide
             if pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True, pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove ghosts player hit
                 pygame.sprite.groupcollide(groupPlayerGroup, groupGhosts, False, True)
                 # Lose 25% of the full battery charge
-                intBatteryLevel = (intBatteryLevel - 2500)
-                # Render the battery text
-                textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
-                                                    colorValYellow)
+                intBatteryLevel -= 2500
+
             # Second check if player and debris collide
             elif pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
                                              pygame.sprite.collide_circle_ratio(0.50)):
@@ -173,10 +195,9 @@ def run_levels(screen):
                 intTotalScore += (100 * intNumDebrisCollected)
                 # Render the score text
                 textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
-            # If no collisions then simply lower the battery level
-            else:
-                # Render the battery text
-                textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
+
+            # Render the battery text
+            textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
                                                     colorValYellow)
             # Place the score text on the screen
             screen.blit(textRendScore, [300, 10])
