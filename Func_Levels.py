@@ -106,7 +106,7 @@ def run_levels(screen):
         pygame.display.flip()
         time.sleep(0.5)
         # Load Title Screen Music
-        pygame.mixer.music.load('sounds/Title_Theme.ogg')
+        pygame.mixer.music.load('sounds/Level_Funk.ogg')
         pygame.mixer.music.play(loops=-1, start=0.0, fade_ms=1000)
         # Make Title Text
         textRendTitle = fontMain25.render("Spirit Cleaners, Inc.", False, colorValYellow)
