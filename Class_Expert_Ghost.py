@@ -1,6 +1,6 @@
 """
 
-This is the module for the basic ghost enemy sprite
+This is the module for the expert ghost enemy sprite
 
 """
 

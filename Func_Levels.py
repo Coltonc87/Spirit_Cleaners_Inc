@@ -13,6 +13,7 @@ from Class_Debris import Debris
 from Class_Basic_Ghost import Basic_Ghost
 from Class_Adv_Ghost import Adv_Ghost
 from Class_Expert_Ghost import Exp_Ghost
+from Class_Nightmare_Ghost import NM_Ghost
 from pygame.sprite import Group
 
 
@@ -49,6 +50,7 @@ def run_levels(screen):
             intNumOfBasicGhosts = 7 - intLevel
             intNumOfAdvGhosts = intLevel - 1
             intNumOfExpGhosts = intLevel - 2
+            intNumOfNMGhosts = 1
         elif intLevel == 4:
             intNumOfBasicGhosts = 2
             intNumOfAdvGhosts = 2
@@ -81,6 +83,11 @@ def run_levels(screen):
         intGhostCounter = intNumOfExpGhosts
         while intGhostCounter > 0:
             objNewGhost = Exp_Ghost(screen)
+            groupGhosts.add(objNewGhost)
+            intGhostCounter -= 1
+        intGhostCounter = intNumOfNMGhosts
+        while intGhostCounter > 0:
+            objNewGhost = NM_Ghost(screen)
             groupGhosts.add(objNewGhost)
             intGhostCounter -= 1
 
