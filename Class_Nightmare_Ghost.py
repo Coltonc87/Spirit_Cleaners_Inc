@@ -1,6 +1,7 @@
 """
 
 This is the module for the nightmare ghost enemy sprite
+This enemy patrols the perimeter of the level in very unpredictable ways.
 
 """
 
@@ -25,6 +26,7 @@ class NM_Ghost(Sprite):
         self.frame = 0
         self.boolFrameUp = True
         self.intRandFrame = 0
+        self.intRandFlag = 1
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
         # Set randomly if the ghost will move along the x axis (1) or y axis (2)
@@ -60,10 +62,20 @@ class NM_Ghost(Sprite):
 
     def move_and_blitself(self):
         if self.axis <= 2:
-            if self.rect.centerx <= 100 and self.moving_left == True:
-                self.moving_left = False
-            elif self.rect.centerx >= 700 and self.moving_left == False:
-                self.moving_left = True
+            if self.rect.centerx <= 100 and self.moving_left:
+                self.intRandFlag = random.randint(1, 2)
+                if self.intRandFlag == 1:
+                    self.moving_left = False
+                    self.axis = random.randint(1, 4)
+                elif self.intRandFlag == 2:
+                    self.rect.centerx = 700
+            elif self.rect.centerx >= 700 and not self.moving_left:
+                self.intRandFlag = random.randint(1, 2)
+                if self.intRandFlag == 1:
+                    self.moving_left = True
+                    self.axis = random.randint(1, 4)
+                elif self.intRandFlag == 2:
+                    self.rect.centerx = 100
 
             if self.moving_left:
                 self.rect.centerx -= 2
@@ -76,10 +88,21 @@ class NM_Ghost(Sprite):
             self.screen.blit(self.image, self.rect)
 
         elif self.axis > 2:
-            if self.rect.centery <= 100 and self.moving_down == False:
-                self.moving_down = True
-            elif self.rect.centery >= 500 and self.moving_down == True:
-                self.moving_down = False
+            if self.rect.centery <= 100 and not self.moving_down:
+                self.intRandFlag = random.randint(1, 2)
+                if self.intRandFlag == 1:
+                    self.moving_down = True
+                    self.axis = random.randint(1, 4)
+                elif self.intRandFlag == 2:
+                    self.rect.centery = 500
+
+            elif self.rect.centery >= 500 and self.moving_down:
+                self.intRandFlag = random.randint(1, 2)
+                if self.intRandFlag == 1:
+                    self.moving_down = False
+                    self.axis = random.randint(1, 4)
+                elif self.intRandFlag == 2:
+                    self.rect.centery = 100
 
             if self.moving_down:
                 self.rect.centery += 2

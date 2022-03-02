@@ -7,6 +7,7 @@ This is the module for the main level loop of the game
 import sys
 import pygame
 import time
+import random
 from Class_Background import Background
 from Class_Vacuum import Vacuum
 from Class_Debris import Debris
@@ -47,26 +48,30 @@ def run_levels(screen):
 
         ''' ghost group'''
         if intLevel < 4:
-            intNumOfBasicGhosts = 7 - intLevel
+            intNumOfBasicGhosts = 6 - intLevel
             intNumOfAdvGhosts = intLevel - 1
             intNumOfExpGhosts = intLevel - 2
-            intNumOfNMGhosts = 1
+            intNumOfNMGhosts = random.randint(0, 1)
         elif intLevel == 4:
-            intNumOfBasicGhosts = 2
+            intNumOfBasicGhosts = 1
             intNumOfAdvGhosts = 2
             intNumOfExpGhosts = 2
+            intNumOfNMGhosts = random.randint(0, 1)
         elif intLevel == 5:
-            intNumOfBasicGhosts = 1
-            intNumOfAdvGhosts = 3
-            intNumOfExpGhosts = 2
-        elif intLevel == 6:
             intNumOfBasicGhosts = 0
             intNumOfAdvGhosts = 3
+            intNumOfExpGhosts = 2
+            intNumOfNMGhosts = random.randint(0, 1)
+        elif intLevel == 6:
+            intNumOfBasicGhosts = 0
+            intNumOfAdvGhosts = 2
             intNumOfExpGhosts = 3
+            intNumOfNMGhosts = random.randint(1, 2)
         elif intLevel > 6:
             intNumOfBasicGhosts = 0
             intNumOfAdvGhosts = 9 - intLevel
             intNumOfExpGhosts = intLevel - 3
+            intNumOfNMGhosts = random.randint(1, 3)
 
         groupGhosts = Group()
 

@@ -7,10 +7,14 @@ This is the module for displaying the high score screen
 import sys
 import pygame
 import random
+import ast
 from Class_Background import Background
 from Class_Vacuum import Vacuum
 from Class_Debris import Debris
 from Class_Basic_Ghost import Basic_Ghost
+from Class_Adv_Ghost import Adv_Ghost
+from Class_Expert_Ghost import Exp_Ghost
+from Class_Nightmare_Ghost import NM_Ghost
 from pygame.sprite import Group
 
 
@@ -28,15 +32,36 @@ def display_screen(screen, listHighScores):
     objVac = Vacuum(screen)
 
     ''' ghost group'''
-    intNumOfGhosts = 25
+    intNumOfBasicGhosts = 5
+    intNumOfAdvGhosts = 4
+    intNumOfExpGhosts = 3
+    intNumOfNMGhosts = 2
+
     groupGhosts = Group()
-    while intNumOfGhosts > 0:
+
+    intGhostCounter = intNumOfBasicGhosts
+    while intGhostCounter > 0:
         objNewGhost = Basic_Ghost(screen)
         groupGhosts.add(objNewGhost)
-        intNumOfGhosts -= 1
+        intGhostCounter -= 1
+    intGhostCounter = intNumOfAdvGhosts
+    while intGhostCounter > 0:
+        objNewGhost = Adv_Ghost(screen)
+        groupGhosts.add(objNewGhost)
+        intGhostCounter -= 1
+    intGhostCounter = intNumOfExpGhosts
+    while intGhostCounter > 0:
+        objNewGhost = Exp_Ghost(screen)
+        groupGhosts.add(objNewGhost)
+        intGhostCounter -= 1
+    intGhostCounter = intNumOfNMGhosts
+    while intGhostCounter > 0:
+        objNewGhost = NM_Ghost(screen)
+        groupGhosts.add(objNewGhost)
+        intGhostCounter -= 1
 
     ''' Debris group'''
-    intNumOfDebris = 100
+    intNumOfDebris = 50
     groupAllDebris = Group()
     while intNumOfDebris > 0:
         objNewDebris = Debris(screen)
