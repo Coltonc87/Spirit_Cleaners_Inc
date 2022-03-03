@@ -20,7 +20,7 @@ class NM_Ghost(Sprite):
         # Load initial ghost image and get rectangle collision hull
         self.images = []
         for i in range(1, 11):
-            self.images.append(pygame.image.load('images/NMG_L_%d.png' % i))
+            self.images.append(pygame.image.load('images/NMG_L_%d.png' % i).convert_alpha())
 
         self.image = self.images[3]
         self.frame = 0

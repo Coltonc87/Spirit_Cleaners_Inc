@@ -15,6 +15,7 @@ from Class_Basic_Ghost import Basic_Ghost
 from Class_Adv_Ghost import Adv_Ghost
 from Class_Expert_Ghost import Exp_Ghost
 from Class_Nightmare_Ghost import NM_Ghost
+from Class_Floor_Hole import Floor_Hole
 from pygame.sprite import Group
 
 
@@ -104,6 +105,14 @@ def run_levels(screen):
             groupAllDebris.add(objNewDebris)
             intNumOfDebris -= 1
 
+        '''Floor holes group'''
+        intNumOfHoles = 1
+        groupAllHoles = Group()
+        while intNumOfHoles > 0:
+            objNewHole = Floor_Hole(screen)
+            groupAllHoles.add(objNewHole)
+            intNumOfHoles -= 1
+
         intCountIn = 3
         while intCountIn > 0:
             objGameBackground.blitself()
@@ -179,6 +188,8 @@ def run_levels(screen):
 
             # Place Objects in new location
             objGameBackground.blitself()
+            for currentSprite in groupAllHoles.sprites():
+                currentSprite.blitself()
             for currentSprite in groupAllDebris.sprites():
                 currentSprite.blitself()
             for currentSprite in groupGhosts.sprites():
