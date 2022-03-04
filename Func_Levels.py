@@ -201,8 +201,14 @@ def run_levels(screen):
             screen.blit(textRendTitle, [10, 10])
             screen.blit(textRendLevel, [325, 560])
             # Check for collisions update battery or score accordingly
-            # First check if player and ghosts collide
-            if pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True, pygame.sprite.collide_circle_ratio(0.50)):
+            pygame.sprite.groupcollide(groupAllDebris, groupAllHoles, True, False)
+            if pygame.sprite.spritecollide(objPlayerVac, groupAllHoles, True, pygame.sprite.collide_circle_ratio(0.15)):
+                # Remove ghosts player hit
+                pygame.sprite.groupcollide(groupPlayerGroup, groupAllHoles, True, False)
+                boolLevelRunning = False
+                boolGameOver = True
+            # Check if player and ghosts collide
+            elif pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True, pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove ghosts player hit
                 pygame.sprite.groupcollide(groupPlayerGroup, groupGhosts, False, True)
                 # Lose 25% of the full battery charge

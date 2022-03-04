@@ -45,6 +45,8 @@ class Floor_Hole(Sprite):
     def blitself(self):
         # Place on the main screen
         self.screen.blit(self.image, self.rect)
-        self.intRandImageIndex = random.randint(0, 4)
-        self.image = self.images[self.intRandImageIndex]
+        # Change to another image 1/10 of the time randomly with each loop
+        if random.randint(1, 30) == 1:
+            self.intRandImageIndex = random.randint(0, 4)
+            self.image = self.images[self.intRandImageIndex]
 
