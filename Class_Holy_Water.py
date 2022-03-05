@@ -1,6 +1,6 @@
 """
 
-This is the module for the floor hole sprite
+This is the module for the holy water sprite
 
 """
 
@@ -9,19 +9,21 @@ from pygame.sprite import Sprite
 import random
 
 
-class Floor_Hole(Sprite):
+class Holy_Water(Sprite):
 
     def __init__(self, screen):
-        super(Floor_Hole, self).__init__()
+        super(Holy_Water, self).__init__()
         # Load main screen size
         self.screen = screen
 
         # List to hold image paths
         self.images = []
         for i in range(1, 6):
-            self.images.append(pygame.image.load('images/Hole_%d.png' % i).convert_alpha())
-        self.intRandImageIndex = random.randint(0, 4)
-        self.image = self.images[self.intRandImageIndex]
+            self.images.append(pygame.image.load('images/Holy_Water_%d.png' % i).convert_alpha())
+        self.frame = 0
+        self.boolFrameUp = True
+        self.image = self.images[self.frame]
+        self.intRandFrameFlag = 0
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
@@ -45,8 +47,17 @@ class Floor_Hole(Sprite):
     def blitself(self):
         # Place on the main screen
         self.screen.blit(self.image, self.rect)
-        # Change to another image 1/50 of the time randomly with each loop
-        if random.randint(1, 50) == 1:
-            self.intRandImageIndex = random.randint(0, 4)
-            self.image = self.images[self.intRandImageIndex]
+        # Change to another image 1/10 of the time randomly with each loop
+        self.intRandFrameFlag = random.randint(1, 20)
+
+        if self.intRandFrameFlag == 1:
+            if self.frame < 4 and self.boolFrameUp:
+                self.frame += 1
+            elif self.boolFrameUp:
+                self.boolFrameUp = False
+            elif self.frame > 0 and not self.boolFrameUp:
+                self.frame -= 1
+            elif not self.boolFrameUp:
+                self.boolFrameUp = True
+        self.image = self.images[self.frame]
 

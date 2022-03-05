@@ -22,10 +22,10 @@ class NM_Ghost(Sprite):
         for i in range(1, 11):
             self.images.append(pygame.image.load('images/NMG_L_%d.png' % i).convert_alpha())
 
-        self.image = self.images[3]
         self.frame = 0
         self.boolFrameUp = True
-        self.intRandFrame = 0
+        self.image = self.images[self.frame]
+        self.intRandFrameFlag = 0
         self.intRandFlag = 1
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
@@ -124,9 +124,9 @@ class NM_Ghost(Sprite):
         more interesting and keep the number of frame images low at 10 without the loop being
         too fast.        
         '''
-        self.intRandFrame = random.randint(1, 100)
+        self.intRandFrameFlag = random.randint(1, 100)
 
-        if self.intRandFrame % 5 == 0:
+        if self.intRandFrameFlag % 5 == 0:
             if self.frame < 9 and self.boolFrameUp:
                 self.frame += 1
             elif self.boolFrameUp:

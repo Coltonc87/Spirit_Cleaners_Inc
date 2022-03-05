@@ -10,6 +10,7 @@ import time
 import random
 from Class_Background import Background
 from Class_Vacuum import Vacuum
+from Class_Holy_Water import Holy_Water
 from Class_Debris import Debris
 from Class_Basic_Ghost import Basic_Ghost
 from Class_Adv_Ghost import Adv_Ghost
@@ -44,8 +45,13 @@ def run_levels(screen):
 
         ''' player group'''
         objPlayerVac = Vacuum(screen)
-        groupPlayerGroup = Group()
-        groupPlayerGroup.add(objPlayerVac)
+        groupPlayer = Group()
+        groupPlayer.add(objPlayerVac)
+
+        ''' holy water group'''
+        objHolyWater = Holy_Water(screen)
+        groupHolyWater = Group()
+        groupHolyWater.add(objHolyWater)
 
         ''' ghost group'''
         if intLevel < 4:
@@ -192,9 +198,11 @@ def run_levels(screen):
                 currentSprite.blitself()
             for currentSprite in groupAllDebris.sprites():
                 currentSprite.blitself()
+            for currentSprite in groupHolyWater.sprites():
+                currentSprite.blitself()
             for currentSprite in groupGhosts.sprites():
                 currentSprite.move_and_blitself()
-            for currentSprite in groupPlayerGroup.sprites():
+            for currentSprite in groupPlayer.sprites():
                 currentSprite.move_and_blitself()
 
             # Put the image of the title text on the screen at 10x10
@@ -204,13 +212,13 @@ def run_levels(screen):
             pygame.sprite.groupcollide(groupAllDebris, groupAllHoles, True, False)
             if pygame.sprite.spritecollide(objPlayerVac, groupAllHoles, True, pygame.sprite.collide_circle_ratio(0.15)):
                 # Remove ghosts player hit
-                pygame.sprite.groupcollide(groupPlayerGroup, groupAllHoles, True, False)
+                pygame.sprite.groupcollide(groupPlayer, groupAllHoles, True, False)
                 boolLevelRunning = False
                 boolGameOver = True
             # Check if player and ghosts collide
             elif pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True, pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove ghosts player hit
-                pygame.sprite.groupcollide(groupPlayerGroup, groupGhosts, False, True)
+                pygame.sprite.groupcollide(groupPlayer, groupGhosts, False, True)
                 # Lose 25% of the full battery charge
                 intBatteryLevel -= 2500
 
@@ -218,7 +226,7 @@ def run_levels(screen):
             elif pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
                                              pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove debris player hit
-                dictDebrisCollide = pygame.sprite.groupcollide(groupPlayerGroup, groupAllDebris, False, True)
+                dictDebrisCollide = pygame.sprite.groupcollide(groupPlayer, groupAllDebris, False, True)
                 # Gain 100 Points per debris piece
                 intNumDebrisCollected = len(dictDebrisCollide) + 1
                 intTotalScore += (100 * intNumDebrisCollected)
