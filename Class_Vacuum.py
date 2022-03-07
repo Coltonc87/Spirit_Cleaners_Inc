@@ -16,11 +16,15 @@ class Vacuum(Sprite):
         self.screen = screen
 
         # Load initial vacuum image and get rectangle collision hull
-        self.images = [pygame.image.load('images/Vacuum_R.png').convert_alpha(),
-                       pygame.image.load('images/Vacuum_L.png').convert_alpha(),
-                       pygame.image.load('images/Vacuum_U.png').convert_alpha(),
-                       pygame.image.load('images/Vacuum_D.png').convert_alpha()]
-        self.image = self.images[3]
+        self.images_normal = [pygame.image.load('images/Vacuum_R.png').convert_alpha(),
+                              pygame.image.load('images/Vacuum_L.png').convert_alpha(),
+                              pygame.image.load('images/Vacuum_U.png').convert_alpha(),
+                              pygame.image.load('images/Vacuum_D.png').convert_alpha()]
+        self.images_inspired = [pygame.image.load('images/Vacuum_R.png').convert_alpha(),
+                                pygame.image.load('images/Vacuum_L.png').convert_alpha(),
+                                pygame.image.load('images/Vacuum_U.png').convert_alpha(),
+                                pygame.image.load('images/Vacuum_D.png').convert_alpha()]
+        self.image = self.images_normal[0]
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
@@ -34,16 +38,16 @@ class Vacuum(Sprite):
     def move_and_blitself(self):
         if self.moveDirection == 'R' and self.rect.centerx < 700:
             self.rect.centerx += 2
-            self.image = self.images[0]
+            self.image = self.images_normal[0]
         elif self.moveDirection == 'L' and self.rect.centerx > 100:
             self.rect.centerx -= 2
-            self.image = self.images[1]
+            self.image = self.images_normal[1]
         elif self.moveDirection == 'U' and self.rect.centery > 100:
             self.rect.centery -= 2
-            self.image = self.images[2]
+            self.image = self.images_normal[2]
         elif self.moveDirection == 'D' and self.rect.centery < 500:
             self.rect.centery += 2
-            self.image = self.images[3]
+            self.image = self.images_normal[3]
 
         # Place on the main screen coordinates
         self.screen.blit(self.image, self.rect)

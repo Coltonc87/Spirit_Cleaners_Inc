@@ -23,7 +23,8 @@ class Holy_Water(Sprite):
         self.frame = 0
         self.boolFrameUp = True
         self.image = self.images[self.frame]
-        self.intRandFrameFlag = 0
+        self.intRandFrameFlag = 1
+        self.intFrameCounter = 0
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
@@ -47,10 +48,10 @@ class Holy_Water(Sprite):
     def blitself(self):
         # Place on the main screen
         self.screen.blit(self.image, self.rect)
-        # Change to another image 1/10 of the time randomly with each loop
-        self.intRandFrameFlag = random.randint(1, 20)
+        # Every 20 loops the remainder of modulus division will be 0
+        self.intRandFrameFlag = self.intFrameCounter % 20
 
-        if self.intRandFrameFlag == 1:
+        if self.intRandFrameFlag == 0:
             if self.frame < 4 and self.boolFrameUp:
                 self.frame += 1
             elif self.boolFrameUp:
@@ -59,5 +60,11 @@ class Holy_Water(Sprite):
                 self.frame -= 1
             elif not self.boolFrameUp:
                 self.boolFrameUp = True
-        self.image = self.images[self.frame]
+            self.image = self.images[self.frame]
+
+        if self.intFrameCounter < 100:
+            self.intFrameCounter += 1
+        elif self.intFrameCounter == 100:
+            self.intFrameCounter = 0
+
 

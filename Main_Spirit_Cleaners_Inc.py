@@ -79,7 +79,8 @@ for row in list_All_Scores:
 # If it's a new ranking score run the initials input screen
 if bool_Score_Check:
     if len(list_All_Scores) > 9:
-        current_string = 'DELETE FROM storage WHERE (playerInitials= \'' + list_All_Scores[9][0] + '\' AND playerScore= ' + str(list_All_Scores[9][1]) + ');'
+        current_string = 'DELETE FROM storage WHERE (playerInitials= \'' + list_All_Scores[9][
+            0] + '\' AND playerScore= ' + str(list_All_Scores[9][1]) + ');'
         sqlCursor.execute(current_string)
         sqlConnection.commit()
 
@@ -92,7 +93,6 @@ if bool_Score_Check:
     sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
     list_All_Scores = sqlCursor.fetchall()
     time.sleep(1.5)
-
 
 # Display high score screen
 Score_Screen.display_screen(game_screen, list_All_Scores)

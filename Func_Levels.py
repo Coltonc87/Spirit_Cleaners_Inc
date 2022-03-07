@@ -9,6 +9,7 @@ import pygame
 import time
 import random
 from Class_Background import Background
+from Class_Grid import Grid
 from Class_Vacuum import Vacuum
 from Class_Holy_Water import Holy_Water
 from Class_Debris import Debris
@@ -42,6 +43,7 @@ def run_levels(screen):
         # Make instances and add to a list
         # Need a blank list here and then append it with objects
         objGameBackground = Background(screen)
+        objGrid = Grid(screen)
 
         ''' player group'''
         objPlayerVac = Vacuum(screen)
@@ -194,6 +196,7 @@ def run_levels(screen):
 
             # Place Objects in new location
             objGameBackground.blitself()
+            objGrid.blitself()
             for currentSprite in groupAllHoles.sprites():
                 currentSprite.blitself()
             for currentSprite in groupAllDebris.sprites():
