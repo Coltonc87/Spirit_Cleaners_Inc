@@ -67,4 +67,7 @@ class Holy_Water(Sprite):
         elif self.intFrameCounter == 100:
             self.intFrameCounter = 0
 
+    def mirror_x(self):
+        self.rect.centerx = 800 - self.rect.centerx
+
 

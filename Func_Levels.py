@@ -30,6 +30,8 @@ def run_levels(screen):
     boolGameOver = False
     # Set initial speed
     intGameSpeed = 110
+    # State of the vacuum "inspired" or not
+    boolStateCheck = False
     # Make score variable
     intTotalScore = 0
     # Set yellow to be used for text
@@ -49,11 +51,6 @@ def run_levels(screen):
         objPlayerVac = Vacuum(screen)
         groupPlayer = Group()
         groupPlayer.add(objPlayerVac)
-
-        ''' holy water group'''
-        objHolyWater = Holy_Water(screen)
-        groupHolyWater = Group()
-        groupHolyWater.add(objHolyWater)
 
         ''' ghost group'''
         if intLevel < 4:
@@ -120,6 +117,19 @@ def run_levels(screen):
             objNewHole = Floor_Hole(screen)
             groupAllHoles.add(objNewHole)
             intNumOfHoles -= 1
+
+        # Check for collisions between any debris and holes and remove debris so nothing is floating
+        pygame.sprite.groupcollide(groupAllDebris, groupAllHoles, True, False)
+
+        ''' holy water group'''
+        objHolyWater = Holy_Water(screen)
+
+        groupHolyWater = Group()
+        groupHolyWater.add(objHolyWater)
+
+        # Check for collisions between holy water and holes and move holy water so nothing is floating
+        while pygame.sprite.groupcollide(groupHolyWater, groupAllHoles, False, False):
+            objHolyWater.mirror_x()
 
         intCountIn = 3
         while intCountIn > 0:
@@ -196,38 +206,51 @@ def run_levels(screen):
 
             # Place Objects in new location
             objGameBackground.blitself()
-            objGrid.blitself()
+            # objGrid.blitself()
             for currentSprite in groupAllHoles.sprites():
                 currentSprite.blitself()
             for currentSprite in groupAllDebris.sprites():
                 currentSprite.blitself()
             for currentSprite in groupHolyWater.sprites():
                 currentSprite.blitself()
-            for currentSprite in groupGhosts.sprites():
-                currentSprite.move_and_blitself()
             for currentSprite in groupPlayer.sprites():
+                currentSprite.move_and_blitself()
+            for currentSprite in groupGhosts.sprites():
                 currentSprite.move_and_blitself()
 
             # Put the image of the title text on the screen at 10x10
             screen.blit(textRendTitle, [10, 10])
             screen.blit(textRendLevel, [325, 560])
             # Check for collisions update battery or score accordingly
-            pygame.sprite.groupcollide(groupAllDebris, groupAllHoles, True, False)
+            if pygame.sprite.spritecollide(objPlayerVac, groupHolyWater, True,
+                                           pygame.sprite.collide_circle_ratio(0.5)):
+                # Remove holy water player hit
+                pygame.sprite.groupcollide(groupPlayer, groupHolyWater, True, False)
+                # Vacuum becomes "inspired"
+                objPlayerVac.inspire()
+                boolStateCheck = objPlayerVac.inspire_state()
+                # Set inspire counter for time limit in loops to stay inspired
+                intInspireCounter = 500
+
             if pygame.sprite.spritecollide(objPlayerVac, groupAllHoles, True, pygame.sprite.collide_circle_ratio(0.15)):
                 # Remove ghosts player hit
                 pygame.sprite.groupcollide(groupPlayer, groupAllHoles, True, False)
                 boolLevelRunning = False
                 boolGameOver = True
-            # Check if player and ghosts collide
-            elif pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True, pygame.sprite.collide_circle_ratio(0.50)):
-                # Remove ghosts player hit
-                pygame.sprite.groupcollide(groupPlayer, groupGhosts, False, True)
-                # Lose 25% of the full battery charge
-                intBatteryLevel -= 2500
 
-            # Second check if player and debris collide
-            elif pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
-                                             pygame.sprite.collide_circle_ratio(0.50)):
+            # Check if player and ghosts collide
+            if not boolStateCheck:
+                # Check if vacuum is not currently inspired, which would result in being able to pass ghosts
+                if pygame.sprite.spritecollide(objPlayerVac, groupGhosts, True,
+                                               pygame.sprite.collide_circle_ratio(0.50)):
+                    # Remove ghosts player hit
+                    pygame.sprite.groupcollide(groupPlayer, groupGhosts, False, True)
+                    # Lose 25% of the full battery charge
+                    intBatteryLevel -= 2500
+
+            # Check if player and debris collide
+            if pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
+                                           pygame.sprite.collide_circle_ratio(0.50)):
                 # Remove debris player hit
                 dictDebrisCollide = pygame.sprite.groupcollide(groupPlayer, groupAllDebris, False, True)
                 # Gain 100 Points per debris piece
@@ -238,7 +261,7 @@ def run_levels(screen):
 
             # Render the battery text
             textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
-                                                    colorValYellow)
+                                                colorValYellow)
             # Place the score text on the screen
             screen.blit(textRendScore, [300, 10])
             # Place the battery text on the screen
@@ -260,6 +283,13 @@ def run_levels(screen):
                 intBatteryLevel -= 1
             # Tick speed to control loop speed
             obj_Clock.tick(intGameSpeed)
+
+            if boolStateCheck and intInspireCounter > 0:
+                intInspireCounter -= 1
+            else:
+                objPlayerVac.uninspire()
+                boolStateCheck = objPlayerVac.inspire_state()
+
         # increase game speed by 5 each time a level progresses
         intGameSpeed += 5
         intLevel += 1
