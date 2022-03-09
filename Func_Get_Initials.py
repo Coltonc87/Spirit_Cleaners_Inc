@@ -13,6 +13,8 @@ def display_screen(screen, score):
     # Load high score Screen Music
     pygame.mixer.music.load('sounds/High_Scores.ogg')
     pygame.mixer.music.play(loops=0, start=0.0, fade_ms=1000)
+    # Clock Object for controlling game speed
+    obj_Clock = pygame.time.Clock()
     # Start and draw the initial screen
     # Make instance of background
     objGameBackground = Background(screen)
@@ -86,6 +88,9 @@ def display_screen(screen, score):
             colorValCurrent[2] -= 1
         else:
             boolColorDown = True
+
+        # Tick speed to control loop speed
+        obj_Clock.tick(120)
 
     strInitialsOutput = ''
     for character in listInitials:
