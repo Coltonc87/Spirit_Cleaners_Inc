@@ -32,6 +32,11 @@ def run_levels(screen):
     intGameSpeed = 110
     # State of the vacuum "inspired" or not
     boolStateCheck = False
+    # Pick up text state and counter
+    boolShowPickUp = False
+    intPickUpCountDown = 0
+    intPickUpx = 0
+    intPickUpy = 0
     # Make score variable
     intTotalScore = 0
     # Set yellow to be used for text
@@ -258,6 +263,12 @@ def run_levels(screen):
                 intTotalScore += (100 * intNumDebrisCollected)
                 # Render the score text
                 textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
+                # Render a pick up score
+                textPickUp = fontMain25.render(str(100 * intNumDebrisCollected), False, colorValYellow)
+                boolShowPickUp = True
+                intPickUpCountDown = 25
+                intPickUpx = random.randint(-50, 50)
+                intPickUpy = random.randint(-50, 50)
 
             # Render the battery text
             textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
@@ -266,6 +277,22 @@ def run_levels(screen):
             screen.blit(textRendScore, [300, 10])
             # Place the battery text on the screen
             screen.blit(textRendBattery, [600, 10])
+
+            if boolShowPickUp and intPickUpCountDown > 0:
+                intPickUpCountDown -= 1
+                screen.blit(textPickUp, [objPlayerVac.rect.centerx + intPickUpx, objPlayerVac.rect.centery + intPickUpy])
+            else:
+                boolShowPickUp = False
+
+            if boolStateCheck and intInspireCounter > 0:
+                intInspireCounter -= 1
+                textInspCountDown = fontMain25.render(str(int(intInspireCounter / 100)+1), False, colorValYellow)
+                screen.blit(textInspCountDown, [objPlayerVac.rect.centerx - 10, objPlayerVac.rect.centery - 60])
+                textInspired = fontMain25.render('INSPIRED!', False, colorValYellow)
+                screen.blit(textInspired, [objPlayerVac.rect.centerx - 75, objPlayerVac.rect.centery + 20])
+            else:
+                objPlayerVac.uninspire()
+                boolStateCheck = objPlayerVac.inspire_state()
 
             # Erase old and redraw the screen items in new locations
             pygame.display.flip()
@@ -283,12 +310,6 @@ def run_levels(screen):
                 intBatteryLevel -= 1
             # Tick speed to control loop speed
             obj_Clock.tick(intGameSpeed)
-
-            if boolStateCheck and intInspireCounter > 0:
-                intInspireCounter -= 1
-            else:
-                objPlayerVac.uninspire()
-                boolStateCheck = objPlayerVac.inspire_state()
 
         # increase game speed by 5 each time a level progresses
         intGameSpeed += 5

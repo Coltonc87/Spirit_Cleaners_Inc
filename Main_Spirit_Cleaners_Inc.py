@@ -97,7 +97,7 @@ if bool_Score_Check:
 # Display high score screen
 Score_Screen.display_screen(game_screen, list_All_Scores)
 time.sleep(1.5)
-print(list_All_Scores)
+print(list_All_Scores )
 print(len(list_All_Scores))
 # Show title screen
 Title_Screen.display_screen(game_screen)
