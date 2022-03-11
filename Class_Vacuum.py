@@ -6,6 +6,7 @@ This is the module for the player controlled vacuum sprite
 
 import pygame
 from pygame.sprite import Sprite
+import random
 
 
 class Vacuum(Sprite):
@@ -38,6 +39,9 @@ class Vacuum(Sprite):
 
         # Set "inspired" flag for Holy Water interaction
         self.boolInspired = False
+        # Set "possessed" flag for ghost interaction
+        self.boolPossessed = False
+        self.intPossessionType = 0
 
     def move_and_blitself(self):
         if self.boolInspired:
@@ -45,18 +49,61 @@ class Vacuum(Sprite):
         else:
             self.image_set = self.images_normal
 
-        if self.moveDirection == 'R' and self.rect.centerx < 700:
-            self.rect.centerx += 2
-            self.image = self.image_set[0]
-        elif self.moveDirection == 'L' and self.rect.centerx > 100:
-            self.rect.centerx -= 2
-            self.image = self.image_set[1]
-        elif self.moveDirection == 'U' and self.rect.centery > 100:
-            self.rect.centery -= 2
-            self.image = self.image_set[2]
-        elif self.moveDirection == 'D' and self.rect.centery < 500:
-            self.rect.centery += 2
-            self.image = self.image_set[3]
+        if not self.possessed_state():
+            if self.moveDirection == 'R' and self.rect.centerx < 700:
+                self.rect.centerx += 2
+                self.image = self.image_set[0]
+            elif self.moveDirection == 'L' and self.rect.centerx > 100:
+                self.rect.centerx -= 2
+                self.image = self.image_set[1]
+            elif self.moveDirection == 'U' and self.rect.centery > 100:
+                self.rect.centery -= 2
+                self.image = self.image_set[2]
+            elif self.moveDirection == 'D' and self.rect.centery < 500:
+                self.rect.centery += 2
+                self.image = self.image_set[3]
+
+        elif self.possessed_state() and self.intPossessionType == 1:
+            if self.moveDirection == 'R' and self.rect.centerx > 100:
+                self.rect.centerx -= 2
+                self.image = self.image_set[0]
+            elif self.moveDirection == 'L' and self.rect.centerx < 700:
+                self.rect.centerx += 2
+                self.image = self.image_set[1]
+            elif self.moveDirection == 'U' and self.rect.centery < 500:
+                self.rect.centery += 2
+                self.image = self.image_set[2]
+            elif self.moveDirection == 'D' and self.rect.centery > 100:
+                self.rect.centery -= 2
+                self.image = self.image_set[3]
+
+        elif self.possessed_state() and self.intPossessionType == 2:
+            if self.moveDirection == 'R' and self.rect.centerx < 700:
+                self.rect.centerx += 1
+                self.image = self.image_set[0]
+            elif self.moveDirection == 'L' and self.rect.centerx > 100:
+                self.rect.centerx -= 1
+                self.image = self.image_set[1]
+            elif self.moveDirection == 'U' and self.rect.centery > 100:
+                self.rect.centery -= 1
+                self.image = self.image_set[2]
+            elif self.moveDirection == 'D' and self.rect.centery < 500:
+                self.rect.centery += 1
+                self.image = self.image_set[3]
+
+        elif self.possessed_state() and self.intPossessionType == 3:
+            if self.moveDirection == 'R' and self.rect.centerx < 700:
+                self.rect.centerx += 5
+                self.image = self.image_set[0]
+            elif self.moveDirection == 'L' and self.rect.centerx > 100:
+                self.rect.centerx -= 5
+                self.image = self.image_set[1]
+            elif self.moveDirection == 'U' and self.rect.centery > 100:
+                self.rect.centery -= 5
+                self.image = self.image_set[2]
+            elif self.moveDirection == 'D' and self.rect.centery < 500:
+                self.rect.centery += 5
+                self.image = self.image_set[3]
 
         # Place on the main screen coordinates
         self.screen.blit(self.image, self.rect)
@@ -72,3 +119,13 @@ class Vacuum(Sprite):
 
     def inspire_state(self):
         return self.boolInspired
+
+    def possess(self):
+        self.boolPossessed = True
+        self.intPossessionType = random.randint(1, 3)
+
+    def exorcise(self):
+        self.boolPossessed = False
+
+    def possessed_state(self):
+        return self.boolPossessed

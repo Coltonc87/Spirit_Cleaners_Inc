@@ -32,6 +32,8 @@ def run_levels(screen):
     intGameSpeed = 110
     # State of the vacuum "inspired" or not
     boolStateCheck = False
+    # State of the vacuum "possession"
+    boolPossessedCheck = False
     # Pick up text state and counter
     boolShowPickUp = False
     intPickUpCountDown = 0
@@ -41,6 +43,8 @@ def run_levels(screen):
     intTotalScore = 0
     # Set yellow to be used for text
     colorValYellow = [255, 255, 0]
+    # Set blue to be used for text
+    colorValBlue = [173, 216, 230]
     # Load custom font
     fontMain25 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 25)
     fontMain100 = pygame.font.Font('fighting-spirit-turbo.bold-italic.ttf', 100)
@@ -235,7 +239,10 @@ def run_levels(screen):
                 objPlayerVac.inspire()
                 boolStateCheck = objPlayerVac.inspire_state()
                 # Set inspire counter for time limit in loops to stay inspired
-                intInspireCounter = 500
+                intInspireCounter = 600
+                if boolPossessedCheck:
+                    objPlayerVac.exorcise()
+                    boolPossessedCheck = objPlayerVac.possessed_state()
 
             if pygame.sprite.spritecollide(objPlayerVac, groupAllHoles, True, pygame.sprite.collide_circle_ratio(0.15)):
                 # Remove ghosts player hit
@@ -252,6 +259,11 @@ def run_levels(screen):
                     pygame.sprite.groupcollide(groupPlayer, groupGhosts, False, True)
                     # Lose 25% of the full battery charge
                     intBatteryLevel -= 2500
+                    # Vacuum becomes "possessed"
+                    objPlayerVac.possess()
+                    boolPossessedCheck = objPlayerVac.possessed_state()
+                    # Set inspire counter for time limit in loops to stay inspired
+                    intPossessionCounter = 400
 
             # Check if player and debris collide
             if pygame.sprite.spritecollide(objPlayerVac, groupAllDebris, True,
@@ -266,9 +278,9 @@ def run_levels(screen):
                 # Render a pick up score
                 textPickUp = fontMain25.render(str(100 * intNumDebrisCollected), False, colorValYellow)
                 boolShowPickUp = True
-                intPickUpCountDown = 25
-                intPickUpx = random.randint(-50, 50)
-                intPickUpy = random.randint(-50, 50)
+                intPickUpCountDown = 50
+                intPickUpx = random.randint(-50, 25)
+                intPickUpy = random.randint(-50, 25)
 
             # Render the battery text
             textRendBattery = fontMain25.render(('Battery: ' + str(int(intBatteryLevel / 100)) + '%'), True,
@@ -280,19 +292,30 @@ def run_levels(screen):
 
             if boolShowPickUp and intPickUpCountDown > 0:
                 intPickUpCountDown -= 1
-                screen.blit(textPickUp, [objPlayerVac.rect.centerx + intPickUpx, objPlayerVac.rect.centery + intPickUpy])
+                screen.blit(textPickUp,
+                            [objPlayerVac.rect.centerx + intPickUpx, objPlayerVac.rect.centery + intPickUpy])
             else:
                 boolShowPickUp = False
 
-            if boolStateCheck and intInspireCounter > 0:
+            if boolStateCheck and intInspireCounter > 1:
                 intInspireCounter -= 1
-                textInspCountDown = fontMain25.render(str(int(intInspireCounter / 100)+1), False, colorValYellow)
+                textInspCountDown = fontMain25.render(str(int(intInspireCounter / 100)), False, colorValYellow)
                 screen.blit(textInspCountDown, [objPlayerVac.rect.centerx - 10, objPlayerVac.rect.centery - 60])
                 textInspired = fontMain25.render('INSPIRED!', False, colorValYellow)
                 screen.blit(textInspired, [objPlayerVac.rect.centerx - 75, objPlayerVac.rect.centery + 20])
             else:
                 objPlayerVac.uninspire()
                 boolStateCheck = objPlayerVac.inspire_state()
+
+            if boolPossessedCheck and intPossessionCounter > 1:
+                intPossessionCounter -= 1
+                textPossessCountDown = fontMain25.render(str(int(intPossessionCounter / 100)), False, colorValBlue)
+                screen.blit(textPossessCountDown, [objPlayerVac.rect.centerx - 10, objPlayerVac.rect.centery - 60])
+                textInspired = fontMain25.render('POSSESSED!', False, colorValBlue)
+                screen.blit(textInspired, [objPlayerVac.rect.centerx - 100, objPlayerVac.rect.centery + 20])
+            else:
+                objPlayerVac.exorcise()
+                boolPossessedCheck = objPlayerVac.possessed_state()
 
             # Erase old and redraw the screen items in new locations
             pygame.display.flip()
