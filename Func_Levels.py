@@ -51,10 +51,10 @@ def run_levels(screen):
     # Levels
     while not boolGameOver:
         # Start the level and draw the initial screen
-        # Make instances and add to a list
-        # Need a blank list here and then append it with objects
         objGameBackground = Background(screen)
+        # Make a grid object to hold tile states and return starting coordinates of objects
         objGrid = Grid(screen)
+        intAvailableIndices = [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23]
 
         ''' player group'''
         objPlayerVac = Vacuum(screen)
@@ -123,7 +123,10 @@ def run_levels(screen):
         intNumOfHoles = 1
         groupAllHoles = Group()
         while intNumOfHoles > 0:
-            objNewHole = Floor_Hole(screen)
+            intRandGridIndex = random.choice(intAvailableIndices)
+            objNewHole = Floor_Hole(screen, objGrid.returnTileX(intRandGridIndex), objGrid.returnTileY(intRandGridIndex))
+            objGrid.setTileState(intRandGridIndex)
+            intAvailableIndices.remove(intRandGridIndex)
             groupAllHoles.add(objNewHole)
             intNumOfHoles -= 1
 
@@ -215,7 +218,7 @@ def run_levels(screen):
 
             # Place Objects in new location
             objGameBackground.blitself()
-            # objGrid.blitself()
+            objGrid.blitself()
             for currentSprite in groupAllHoles.sprites():
                 currentSprite.blitself()
             for currentSprite in groupAllDebris.sprites():

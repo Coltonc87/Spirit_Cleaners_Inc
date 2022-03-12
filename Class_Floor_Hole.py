@@ -11,7 +11,7 @@ import random
 
 class Floor_Hole(Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, xcoord, ycoord):
         super(Floor_Hole, self).__init__()
         # Load main screen size
         self.screen = screen
@@ -25,22 +25,10 @@ class Floor_Hole(Sprite):
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
 
-        # Random groups to set hole centers away from player
-        self.starting_pos_group = random.randint(1, 4)
+        # Position at starting point on the screen
 
-        # Position at random starting point on the screen
-        if self.starting_pos_group == 1:
-            self.rect.centerx = random.randint(125, 675)
-            self.rect.centery = random.randint(125, 200)
-        elif self.starting_pos_group == 2:
-            self.rect.centerx = random.randint(100, 675)
-            self.rect.centery = random.randint(400, 475)
-        elif self.starting_pos_group == 3:
-            self.rect.centerx = random.randint(125, 200)
-            self.rect.centery = random.randint(125, 475)
-        elif self.starting_pos_group == 4:
-            self.rect.centerx = random.randint(600, 675)
-            self.rect.centery = random.randint(125, 475)
+        self.rect.centerx = xcoord
+        self.rect.centery = ycoord
 
     def blitself(self):
         # Place on the main screen
@@ -49,4 +37,3 @@ class Floor_Hole(Sprite):
         if random.randint(1, 50) == 1:
             self.intRandImageIndex = random.randint(0, 4)
             self.image = self.images[self.intRandImageIndex]
-
