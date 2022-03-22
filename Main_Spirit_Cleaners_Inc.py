@@ -1,6 +1,6 @@
 """
 
-This is the main script for the game run it to test all features
+This is the main script for the game, run it to test all features
 
 """
 
@@ -37,7 +37,7 @@ try:
 except sqlConnection.DatabaseError:
     print("Table Exists.")
 
-# Initial data for testing
+# Initial data for testing, uncomment to use
 # current_string = 'INSERT INTO storage (playerInitials, playerScore) VALUES ("KMC", 13600);'
 # sqlCursor.execute(current_string)
 # sqlConnection.commit()
@@ -45,8 +45,9 @@ except sqlConnection.DatabaseError:
 # Read the scores in as a list of tuples from database, sorting with the query
 sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
 list_All_Scores = sqlCursor.fetchall()
-print(list_All_Scores)
-print(len(list_All_Scores))
+# Checking with console output, uncomment to use
+# print(list_All_Scores)
+# print(len(list_All_Scores))
 
 # Main Game, Start PyGame
 pygame.init()
@@ -59,48 +60,58 @@ game_screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Spirit Cleaners, Inc.")
 # Show title screen
 Title_Screen.display_screen(game_screen)
+# Pause between title screen and high scores
 time.sleep(1.5)
 # Show high scores
 Score_Screen.display_screen(game_screen, list_All_Scores)
+# Pause
 time.sleep(1.5)
 # Run the main levels loop until Game Over and return the score
 intScoreReturn = Levels.run_levels(game_screen)
+# Pause
 time.sleep(1.5)
 
 # Check if the current score is in the top 10 scores
 bool_Score_Check = False
 for row in list_All_Scores:
     for item in row:
-        # Check if item is an integer to prove if it's a score or not
+        # Check if item is an integer to prove if it's a score or initials for comparison
         if isinstance(item, int):
             # If current score is higher than any previous score return True
             if item < intScoreReturn:
                 bool_Score_Check = True
 # If it's a new ranking score run the initials input screen
 if bool_Score_Check:
+    # Delete the lowest score if more than 9 scores exist
     if len(list_All_Scores) > 9:
         current_string = 'DELETE FROM storage WHERE (playerInitials= \'' + list_All_Scores[9][
             0] + '\' AND playerScore= ' + str(list_All_Scores[9][1]) + ');'
         sqlCursor.execute(current_string)
         sqlConnection.commit()
-
+    # Run initials input screen and return the initials
     charNewScoreInit = Initials_Screen.display_screen(game_screen, intScoreReturn)
+    # Write the score and initials to the sql database
     current_string = 'INSERT INTO storage (playerInitials, playerScore) ' \
                      'VALUES ("' + charNewScoreInit + '", ' + str(intScoreReturn) + ');'
 
     sqlCursor.execute(current_string)
     sqlConnection.commit()
+    # Replace the high score list with the new database entries
     sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
     list_All_Scores = sqlCursor.fetchall()
+    # Pause
     time.sleep(1.5)
 
 # Display high score screen
 Score_Screen.display_screen(game_screen, list_All_Scores)
+# Pause
 time.sleep(1.5)
-print(list_All_Scores )
-print(len(list_All_Scores))
+# Checker functions for console output to check if db deletions are working correctly
+# print(list_All_Scores )
+# print(len(list_All_Scores))
 # Show title screen
 Title_Screen.display_screen(game_screen)
+# Pause
 time.sleep(1.5)
 # Close database
 sqlConnection.close()
