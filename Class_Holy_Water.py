@@ -11,7 +11,7 @@ import random
 
 class Holy_Water(Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, xcoord, ycoord):
         super(Holy_Water, self).__init__()
         # Load main screen size
         self.screen = screen
@@ -31,19 +31,10 @@ class Holy_Water(Sprite):
         # Random groups to set hole centers away from player
         self.starting_pos_group = random.randint(1, 4)
 
-        # Position at random starting point on the screen
-        if self.starting_pos_group == 1:
-            self.rect.centerx = random.randint(125, 675)
-            self.rect.centery = random.randint(125, 200)
-        elif self.starting_pos_group == 2:
-            self.rect.centerx = random.randint(100, 675)
-            self.rect.centery = random.randint(400, 475)
-        elif self.starting_pos_group == 3:
-            self.rect.centerx = random.randint(125, 200)
-            self.rect.centery = random.randint(125, 475)
-        elif self.starting_pos_group == 4:
-            self.rect.centerx = random.randint(600, 675)
-            self.rect.centery = random.randint(125, 475)
+        # Position at starting point on the screen
+
+        self.rect.centerx = xcoord
+        self.rect.centery = ycoord
 
     def blitself(self):
         # Place on the main screen
@@ -66,8 +57,3 @@ class Holy_Water(Sprite):
             self.intFrameCounter += 1
         elif self.intFrameCounter == 100:
             self.intFrameCounter = 0
-
-    def mirror_x(self):
-        self.rect.centerx = 800 - self.rect.centerx
-
-

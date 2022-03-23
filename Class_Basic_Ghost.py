@@ -11,7 +11,7 @@ import random
 
 class Basic_Ghost(Sprite):
 
-    def __init__(self, screen):
+    def __init__(self, screen, xcoord, ycoord):
         super(Basic_Ghost, self).__init__()
         # Load main screen size
         self.screen = screen
@@ -38,28 +38,17 @@ class Basic_Ghost(Sprite):
         elif self.axis == 4:
             self.moving_left = False
             self.moving_down = False
-        # Random groups to set ghost centers away from player
-        self.starting_pos_group = random.randint(1, 4)
 
-        # Position at random starting point on the screen
-        if self.starting_pos_group == 1:
-            self.rect.centerx = random.randint(100, 700)
-            self.rect.centery = random.randint(100, 200)
-        elif self.starting_pos_group == 2:
-            self.rect.centerx = random.randint(100, 700)
-            self.rect.centery = random.randint(400, 500)
-        elif self.starting_pos_group == 3:
-            self.rect.centerx = random.randint(100, 200)
-            self.rect.centery = random.randint(100, 500)
-        elif self.starting_pos_group == 4:
-            self.rect.centerx = random.randint(600, 700)
-            self.rect.centery = random.randint(100, 500)
+        # Position at starting point on the screen
+
+        self.rect.centerx = xcoord
+        self.rect.centery = ycoord
 
     def move_and_blitself(self):
         if self.axis <= 2:
-            if self.rect.centerx <= 100 and self.moving_left == True:
+            if self.rect.centerx <= 100 and self.moving_left:
                 self.moving_left = False
-            elif self.rect.centerx >= 700 and self.moving_left == False:
+            elif self.rect.centerx >= 700 and not self.moving_left:
                 self.moving_left = True
 
             if self.moving_left:
@@ -73,9 +62,9 @@ class Basic_Ghost(Sprite):
             self.screen.blit(self.image, self.rect)
 
         elif self.axis > 2:
-            if self.rect.centery <= 100 and self.moving_down == False:
+            if self.rect.centery <= 100 and not self.moving_down:
                 self.moving_down = True
-            elif self.rect.centery >= 500 and self.moving_down == True:
+            elif self.rect.centery >= 500 and self.moving_down:
                 self.moving_down = False
 
             if self.moving_down:

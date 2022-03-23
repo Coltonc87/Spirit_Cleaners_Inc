@@ -63,7 +63,7 @@ Title_Screen.display_screen(game_screen)
 # Pause between title screen and high scores
 time.sleep(1.5)
 # Show high scores
-Score_Screen.display_screen(game_screen, list_All_Scores)
+# Score_Screen.display_screen(game_screen, list_All_Scores)
 # Pause
 time.sleep(1.5)
 # Run the main levels loop until Game Over and return the score
@@ -103,7 +103,7 @@ if bool_Score_Check:
     time.sleep(1.5)
 
 # Display high score screen
-Score_Screen.display_screen(game_screen, list_All_Scores)
+# Score_Screen.display_screen(game_screen, list_All_Scores)
 # Pause
 time.sleep(1.5)
 # Checker functions for console output to check if db deletions are working correctly

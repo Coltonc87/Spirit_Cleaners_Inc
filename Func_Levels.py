@@ -34,6 +34,8 @@ def run_levels(screen):
     boolStateCheck = False
     # State of the vacuum "possession"
     boolPossessedCheck = False
+    # Grid indices
+    intMasterIndices = [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23]
     # Pick up text state, display counter, and coordinate values
     boolShowPickUp = False
     intPickUpCountDown = 0
@@ -55,13 +57,13 @@ def run_levels(screen):
         # Make a grid object to hold tile states and return starting coordinates of objects
         # This is being simplified or replaced with the list below.
         objGrid = Grid(screen)
-        # List to hold available tiles instead of grid object
-        intAvailableIndices = [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23]
 
         ''' player group'''
         objPlayerVac = Vacuum(screen)
         groupPlayer = Group()
         groupPlayer.add(objPlayerVac)
+
+        intAvailableIndices = intMasterIndices.copy()
 
         ''' ghost group'''
         if intLevel < 4:
@@ -78,23 +80,27 @@ def run_levels(screen):
             intNumOfBasicGhosts = 0
             intNumOfAdvGhosts = 3
             intNumOfExpGhosts = 2
-            intNumOfNMGhosts = random.randint(0, 1)
+            intNumOfNMGhosts = random.randint(1, 2)
         elif intLevel == 6:
             intNumOfBasicGhosts = 0
             intNumOfAdvGhosts = 2
             intNumOfExpGhosts = 3
-            intNumOfNMGhosts = random.randint(1, 2)
+            intNumOfNMGhosts = 2
         elif intLevel > 6:
             intNumOfBasicGhosts = 0
-            intNumOfAdvGhosts = 9 - intLevel
-            intNumOfExpGhosts = intLevel - 3
-            intNumOfNMGhosts = random.randint(1, 3)
+            intNumOfAdvGhosts = 3
+            intNumOfExpGhosts = 6
+            intNumOfNMGhosts = 2
 
         groupGhosts = Group()
 
         intGhostCounter = intNumOfBasicGhosts
         while intGhostCounter > 0:
-            objNewGhost = Basic_Ghost(screen)
+            intRandGridIndex = random.choice(intAvailableIndices)
+            objNewGhost = Basic_Ghost(screen, objGrid.returnTileX(intRandGridIndex),
+                                      objGrid.returnTileY(intRandGridIndex))
+            objGrid.setTileState(intRandGridIndex)
+            intAvailableIndices.remove(intRandGridIndex)
             groupGhosts.add(objNewGhost)
             intGhostCounter -= 1
         intGhostCounter = intNumOfAdvGhosts
@@ -121,9 +127,13 @@ def run_levels(screen):
             groupAllDebris.add(objNewDebris)
             intNumOfDebris -= 1
 
+        intAvailableIndices = intMasterIndices.copy()
+
         '''Floor holes group'''
         intNumOfHoles = 2
         groupAllHoles = Group()
+        # List to hold available tiles instead of grid object
+
         while intNumOfHoles > 0:
             intRandGridIndex = random.choice(intAvailableIndices)
             objNewHole = Floor_Hole(screen, objGrid.returnTileX(intRandGridIndex),
@@ -137,15 +147,15 @@ def run_levels(screen):
         pygame.sprite.groupcollide(groupAllDebris, groupAllHoles, True, False)
 
         ''' holy water group'''
-        objHolyWater = Holy_Water(screen)
-
         groupHolyWater = Group()
+        intRandGridIndex = random.choice(intAvailableIndices)
+        objHolyWater = Holy_Water(screen, objGrid.returnTileX(intRandGridIndex),
+                                  objGrid.returnTileY(intRandGridIndex))
+        objGrid.setTileState(intRandGridIndex)
+        intAvailableIndices.remove(intRandGridIndex)
         groupHolyWater.add(objHolyWater)
 
-        # Check for collisions between holy water and holes and move holy water so nothing is floating
-        while pygame.sprite.groupcollide(groupHolyWater, groupAllHoles, False, False):
-            objHolyWater.mirror_x()
-
+        # Countdown
         intCountIn = 3
         while intCountIn > 0:
             objGameBackground.blitself()
