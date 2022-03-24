@@ -120,7 +120,7 @@ def run_levels(screen):
             intGhostCounter -= 1
 
         ''' Debris group'''
-        intNumOfDebris = 40
+        intNumOfDebris = 60
         groupAllDebris = Group()
         while intNumOfDebris > 0:
             objNewDebris = Debris(screen)

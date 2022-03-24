@@ -27,8 +27,8 @@ class Debris(Sprite):
         self.screen_rect = screen.get_rect()
 
         # Position at random starting point on the screen
-        self.rect.centerx = random.randint(100, 700)
-        self.rect.centery = random.randint(100, 500)
+        self.rect.centerx = random.randrange(100, 700, 2)
+        self.rect.centery = random.randrange(100, 500, 2)
 
     def blitself(self):
         # Place on the main screen

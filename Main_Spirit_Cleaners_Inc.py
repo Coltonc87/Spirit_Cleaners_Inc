@@ -46,8 +46,8 @@ except sqlConnection.DatabaseError:
 sqlCursor.execute("SELECT * FROM storage ORDER BY playerScore DESC")
 list_All_Scores = sqlCursor.fetchall()
 # Checking with console output, uncomment to use
-# print(list_All_Scores)
-# print(len(list_All_Scores))
+print(list_All_Scores)
+print(len(list_All_Scores))
 
 # Main Game, Start PyGame
 pygame.init()
@@ -63,7 +63,7 @@ Title_Screen.display_screen(game_screen)
 # Pause between title screen and high scores
 time.sleep(1.5)
 # Show high scores
-# Score_Screen.display_screen(game_screen, list_All_Scores)
+Score_Screen.display_screen(game_screen, list_All_Scores)
 # Pause
 time.sleep(1.5)
 # Run the main levels loop until Game Over and return the score
@@ -103,12 +103,12 @@ if bool_Score_Check:
     time.sleep(1.5)
 
 # Display high score screen
-# Score_Screen.display_screen(game_screen, list_All_Scores)
+Score_Screen.display_screen(game_screen, list_All_Scores)
 # Pause
 time.sleep(1.5)
 # Checker functions for console output to check if db deletions are working correctly
-# print(list_All_Scores )
-# print(len(list_All_Scores))
+print(list_All_Scores )
+print(len(list_All_Scores))
 # Show title screen
 Title_Screen.display_screen(game_screen)
 # Pause

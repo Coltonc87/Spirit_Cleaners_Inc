@@ -43,17 +43,17 @@ class Adv_Ghost(Sprite):
 
         # Position at random starting point on the screen
         if self.starting_pos_group == 1:
-            self.rect.centerx = random.randint(100, 700)
-            self.rect.centery = random.randint(100, 200)
+            self.rect.centerx = random.randrange(100, 700, 50)
+            self.rect.centery = random.randrange(100, 200, 50)
         elif self.starting_pos_group == 2:
-            self.rect.centerx = random.randint(100, 700)
-            self.rect.centery = random.randint(400, 500)
+            self.rect.centerx = random.randrange(100, 700, 50)
+            self.rect.centery = random.randrange(400, 500, 50)
         elif self.starting_pos_group == 3:
-            self.rect.centerx = random.randint(100, 200)
-            self.rect.centery = random.randint(100, 500)
+            self.rect.centerx = random.randrange(100, 200, 50)
+            self.rect.centery = random.randrange(100, 500, 50)
         elif self.starting_pos_group == 4:
-            self.rect.centerx = random.randint(600, 700)
-            self.rect.centery = random.randint(100, 500)
+            self.rect.centerx = random.randrange(600, 700, 50)
+            self.rect.centery = random.randrange(100, 500, 50)
 
     def move_and_blitself(self):
 

@@ -8,6 +8,7 @@ import sys
 import pygame
 import random
 from Class_Background import Background
+from Class_Grid import Grid
 from Class_Vacuum import Vacuum
 from Class_Debris import Debris
 from Class_Basic_Ghost import Basic_Ghost
@@ -18,6 +19,8 @@ from pygame.sprite import Group
 
 
 def display_screen(screen, listHighScores):
+    # Grid indices
+    intMasterIndices = [0, 1, 2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 22, 23]
     # Load high score Screen Music
     pygame.mixer.music.load('sounds/High_Scores.ogg')
     # Play music
@@ -26,21 +29,30 @@ def display_screen(screen, listHighScores):
     obj_Clock = pygame.time.Clock()
     # Create background object
     objGameBackground = Background(screen)
+    # Make a grid object to hold tile states and return starting coordinates of objects
+    # This is being simplified or replaced with the list below.
+    objGrid = Grid(screen)
     # Create vacuum for animation
     objVac = Vacuum(screen)
 
+    intAvailableIndices = intMasterIndices.copy()
+
     ''' ghost group'''
     # Set number of each type of ghosts to animate
-    intNumOfBasicGhosts = 5
-    intNumOfAdvGhosts = 4
+    intNumOfBasicGhosts = 3
+    intNumOfAdvGhosts = 3
     intNumOfExpGhosts = 3
-    intNumOfNMGhosts = 2
+    intNumOfNMGhosts = 3
     # Create an empty group to hold ghosts
     groupGhosts = Group()
     # Loop to create Basic Ghosts and add to group
     intGhostCounter = intNumOfBasicGhosts
     while intGhostCounter > 0:
-        objNewGhost = Basic_Ghost(screen)
+        intRandGridIndex = random.choice(intAvailableIndices)
+        objNewGhost = Basic_Ghost(screen, objGrid.returnTileX(intRandGridIndex),
+                                  objGrid.returnTileY(intRandGridIndex))
+        objGrid.setTileState(intRandGridIndex)
+        intAvailableIndices.remove(intRandGridIndex)
         groupGhosts.add(objNewGhost)
         intGhostCounter -= 1
     # Loop to create Advanced Ghosts and add to group
