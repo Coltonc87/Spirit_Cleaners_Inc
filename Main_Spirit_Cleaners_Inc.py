@@ -14,10 +14,7 @@ import Func_Title_Screen as Title_Screen
 import Func_Get_Initials as Initials_Screen
 
 """Setting up and checking the SQL Database for high scores"""
-# set directory to the current files path for the game
-directory_name = os.path.dirname(__file__)
-# set database path to the current directory
-database_path = os.path.join(directory_name, "Top_10_Scores.db")
+database_path = "Top_10_Scores.db"
 
 # try and except to handle any error when connecting to database and exit if an error occurs
 try:
