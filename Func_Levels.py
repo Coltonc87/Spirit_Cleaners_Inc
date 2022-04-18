@@ -22,6 +22,11 @@ from pygame.sprite import Group
 
 
 def run_levels(screen):
+    Ghost_Collide_Sound = pygame.mixer.Sound("sounds/Ghost_Collide.ogg")
+    Holy_Water_Sound = pygame.mixer.Sound("sounds/Holy_Water.ogg")
+    Count_Beep_Sound = pygame.mixer.Sound("sounds/Count_Beep.ogg")
+    Count_Chord_Sound = pygame.mixer.Sound("sounds/Count_Chord.ogg")
+    Game_Over_Sound = pygame.mixer.Sound("sounds/Game_Over.ogg")
     # Level counter
     intLevel = 1
     # Clock Object for controlling game speed
@@ -161,12 +166,14 @@ def run_levels(screen):
             objGameBackground.blitself()
             textRendCount = fontMain100.render(str(intCountIn), False, colorValYellow)
             screen.blit(textRendCount, [350, 225])
+            pygame.mixer.Sound.play(Count_Beep_Sound)
             pygame.display.flip()
             time.sleep(0.5)
             intCountIn -= 1
         objGameBackground.blitself()
         textRendCount = fontMain100.render('GO!', False, colorValYellow)
         screen.blit(textRendCount, [300, 225])
+        pygame.mixer.Sound.play(Count_Chord_Sound)
         pygame.display.flip()
         time.sleep(0.5)
         # Load Title Screen Music
@@ -251,6 +258,7 @@ def run_levels(screen):
                                            pygame.sprite.collide_circle_ratio(0.5)):
                 # Remove holy water player hit
                 pygame.sprite.groupcollide(groupPlayer, groupHolyWater, True, False)
+                pygame.mixer.Sound.play(Holy_Water_Sound)
                 # Vacuum becomes "inspired"
                 objPlayerVac.inspire()
                 boolStateCheck = objPlayerVac.inspire_state()
@@ -265,6 +273,7 @@ def run_levels(screen):
                 pygame.sprite.groupcollide(groupPlayer, groupAllHoles, True, False)
                 boolLevelRunning = False
                 boolGameOver = True
+                pygame.mixer.Sound.play(Game_Over_Sound)
 
             # Check if player and ghosts collide
             if not boolStateCheck:
@@ -275,6 +284,7 @@ def run_levels(screen):
                     pygame.sprite.groupcollide(groupPlayer, groupGhosts, False, True)
                     # Lose 25% of the full battery charge
                     intBatteryLevel -= 2500
+                    pygame.mixer.Sound.play(Ghost_Collide_Sound)
                     # Vacuum becomes "possessed"
                     objPlayerVac.possess()
                     boolPossessedCheck = objPlayerVac.possessed_state()
@@ -288,6 +298,7 @@ def run_levels(screen):
                 dictDebrisCollide = pygame.sprite.groupcollide(groupPlayer, groupAllDebris, False, True)
                 # Gain 100 Points per debris piece
                 intNumDebrisCollected = len(dictDebrisCollide) + 1
+                pygame.mixer.Sound.play(Count_Beep_Sound)
                 intTotalScore += (100 * intNumDebrisCollected)
                 # Render the score text
                 textRendScore = fontMain25.render('Score: ' + str(intTotalScore), False, colorValYellow)
@@ -340,6 +351,7 @@ def run_levels(screen):
             if intBatteryLevel <= 0:
                 boolLevelRunning = False
                 boolGameOver = True
+                pygame.mixer.Sound.play(Game_Over_Sound)
             # Go to next level if all debris is collected
             elif not groupAllDebris:
                 boolLevelRunning = False
@@ -355,4 +367,4 @@ def run_levels(screen):
         intLevel += 1
 
     pygame.mixer.music.fadeout(1000)
-    return intTotalScore + 100
+    return intTotalScore
