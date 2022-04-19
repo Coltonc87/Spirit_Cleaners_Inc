@@ -1,5 +1,5 @@
 # Spirit_Cleaners_Inc
-UPDATE:  A zip folder containing an exe and all files needed to run the game is now included so that anyone can run the game without Python, PyGame or sqlite3 installations.  Extracting the files and running the exe should run  the game.
+UPDATE:  A zip folder (Spirit_Cleaners_Inc_v1.1.zip) containing an exe and all files needed to run the game is now included so that anyone can run the game without Python, PyGame or sqlite3 installations.  Extracting the files and running the exe should run  the game.
 
 For testing run Main_Spirit_Cleaners_Inc.py.  
 System will need sqlite3 and pygame libraries.  
